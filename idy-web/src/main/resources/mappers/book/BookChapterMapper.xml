@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.doogua.api.dao.book.BookChapterMapper">
+	<resultMap id="BookChapter_RM" type="BookChapter">
+		<id property="chapterId" column="chapter_id" />
+		<id property="bookId" column="book_id" />
+		<id property="volumeId" column="volume_id" />
+		<id property="title" column="title" />
+		<id property="intro" column="intro" />
+		<id property="content" column="content" />
+		<id property="word" column="word" />
+		<id property="create" column="create" />
+		<id property="release" column="release" />
+		<id property="browse" column="browse" />
+		<id property="price" column="price" />
+		<id property="cprice" column="cprice" />
+		<id property="sale" column="sale" />
+		<id property="sell" column="sell" />
+		<id property="status" column="status" />
+	</resultMap>
+
+	<resultMap id="BookChapter_Vo" type="BookChapterVo">
+		<id property="chapter_id" column="chapter_id" />
+		<id property="book_id" column="book_id" />
+		<id property="volume_id" column="volume_id" />
+		<id property="title" column="title" />
+		<id property="intro" column="intro" />
+		<id property="content" column="content" />
+		<id property="word" column="word" />
+		<id property="create" column="create" />
+		<id property="release" column="release" />
+		<id property="browse" column="browse" />
+		<id property="price" column="price" />
+		<id property="cprice" column="cprice" />
+		<id property="sale" column="sale" />
+		<id property="sell" column="sell" />
+		<id property="status" column="status" />
+		<id property="is_vip" column="is_vip" />
+	</resultMap>
+	
+	<resultMap id="SimChapter_RM" type="com.doogua.api.common.vo.SimChapter">
+		<id property="chapterId" column="chapter_id" />
+		<id property="title" column="title" />
+	</resultMap>
+	
+	<resultMap id="BookChapter_Xml" type="com.doogua.api.common.xml.BookChapterXml">
+	</resultMap>
+	
+	<resultMap id="Chapter_Xml" type="com.doogua.api.common.xml.ChapterXml">
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		chapter_id,book_id,volume_id,title,intro,content,word,`create`,`release`,browse,price,cprice,sale,sell,status,is_vip as isVip
+	</sql>
+
+	<select id="count" resultType="long">
+		SELECT COUNT(1) FROM book_chapter
+		<where>
+			<if test=" null != chapterId ">
+				AND chapter_id = #{chapterId}
+			</if>
+			<if test=" null != bookId ">
+				AND book_id = #{bookId}
+			</if>
+			<if test=" null != volumeId ">
+				AND volume_id = #{volumeId}
+			</if>
+			<if test=" null != title ">
+				AND title = #{title}
+			</if>
+			<if test=" null != intro ">
+				AND intro = #{intro}
+			</if>
+			<if test=" null != content ">
+				AND content = #{content}
+			</if>
+			<if test=" null != word ">
+				AND word = #{word}
+			</if>
+			<if test=" null != create ">
+				AND `create` = #{create}
+			</if>
+			<if test=" null != release ">
+				AND `release` = #{release}
+			</if>
+			<if test=" null != browse ">
+				AND browse = #{browse}
+			</if>
+			<if test=" null != price ">
+				AND price = #{price}
+			</if>
+			<if test=" null != cprice ">
+				AND cprice = #{cprice}
+			</if>
+			<if test=" null != sale ">
+				AND sale = #{sale}
+			</if>
+			<if test=" null != sell ">
+				AND sell = #{sell}
+			</if>
+			<if test=" null != status ">
+				AND status = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="countAll" resultType="long">
+		SELECT COUNT(1) FROM
+		book_chapter
+	</select>
+	
+	<select id="countUpdated" resultType="int">
+		SELECT COUNT(chapter_id) 
+		FROM book_chapter
+		WHERE book_id = #{bookId}
+		<if test=" null != status ">
+			AND status = #{status}
+		</if>
+		<if test=" null != startDate and null != endDate">
+			<![CDATA[  AND `create` >= #{startDate} AND `create` < #{endDate} ]]>
+		</if>
+	</select>
+
+	<insert id="create" parameterType="map" useGeneratedKeys="true"	keyProperty="chapterId">
+		INSERT INTO book_chapter 
+		(chapter_id,book_id,volume_id,title,intro,content,word,`create`,`release`,browse,price,cprice,sale,sell,status,is_vip)
+		VALUES
+		(#{chapterId},#{bookId},#{volumeId},#{title},#{intro},#{content},#{word},#{create},#{release},#{browse},#{price},#{cprice},#{sale},#{sell},#{status},#{isVip})
+	</insert>
+
+	<delete id="del" parameterType="BookChapter">
+		DELETE FROM book_chapter
+		<where>
+			<if test=" null != chapterId ">
+				AND chapter_id = #{chapterId}
+			</if>
+			<if test=" null != bookId ">
+				AND book_id = #{bookId}
+			</if>
+			<if test=" null != volumeId ">
+				AND volume_id = #{volumeId}
+			</if>
+			<if test=" null != title ">
+				AND title = #{title}
+			</if>
+			<if test=" null != intro ">
+				AND intro = #{intro}
+			</if>
+			<if test=" null != content ">
+				AND content = #{content}
+			</if>
+			<if test=" null != word ">
+				AND word = #{word}
+			</if>
+			<if test=" null != create ">
+				AND `create` = #{create}
+			</if>
+			<if test=" null != release ">
+				AND `release` = #{release}
+			</if>
+			<if test=" null != browse ">
+				AND browse = #{browse}
+			</if>
+			<if test=" null != price ">
+				AND price = #{price}
+			</if>
+			<if test=" null != cprice ">
+				AND cprice = #{cprice}
+			</if>
+			<if test=" null != sale ">
+				AND sale = #{sale}
+			</if>
+			<if test=" null != sell ">
+				AND sell = #{sell}
+			</if>
+			<if test=" null != status ">
+				AND status = #{status}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM book_chapter
+		WHERE id = #{id}
+	</delete>
+
+	<select id="find" resultMap="BookChapter_RM">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM book_chapter
+		<where>
+			<if test=" null != chapterId ">
+				AND chapter_id = #{chapterId}
+			</if>
+			<if test=" null != bookId ">
+				AND book_id = #{bookId}
+			</if>
+			<if test=" null != volumeId ">
+				AND volume_id = #{volumeId}
+			</if>
+			<if test=" null != title ">
+				AND title = #{title}
+			</if>
+			<if test=" null != intro ">
+				AND intro = #{intro}
+			</if>
+			<if test=" null != content ">
+				AND content = #{content}
+			</if>
+			<if test=" null != word ">
+				AND word = #{word}
+			</if>
+			<if test=" null != create ">
+				AND `create` = #{create}
+			</if>
+			<if test=" null != release ">
+				AND `release` = #{release}
+			</if>
+			<if test=" null != browse ">
+				AND browse = #{browse}
+			</if>
+			<if test=" null != price ">
+				AND price = #{price}
+			</if>
+			<if test=" null != cprice ">
+				AND cprice = #{cprice}
+			</if>
+			<if test=" null != sale ">
+				AND sale = #{sale}
+			</if>
+			<if test=" null != sell ">
+				AND sell = #{sell}
+			</if>
+			<if test=" null != status ">
+				AND status = #{status}
+			</if>
+		</where>
+		ORDER BY `create` asc
+		<if test=" null != start and null != limit">
+			LIMIT #{start},#{limit}
+		</if>
+
+	</select>
+	
+	<select id="findWithoutContent" resultMap="BookChapter_RM">
+		SELECT chapter_id,book_id,volume_id,title,word,`create`,`release`,browse,price,cprice,sale,sell,`status`,is_vip as isVip
+		FROM book_chapter
+		<where>
+			<if test=" null != chapterId ">
+				AND chapter_id = #{chapterId}
+			</if>
+			<if test=" null != bookId ">
+				AND book_id = #{bookId}
+			</if>
+			<if test=" null != volumeId ">
+				AND volume_id = #{volumeId}
+			</if>
+			<if test=" null != title ">
+				AND title = #{title}
+			</if>
+			<if test=" null != word ">
+				AND word = #{word}
+			</if>
+			<if test=" null != create ">
+				AND `create` = #{create}
+			</if>
+			<if test=" null != release ">
+				AND `release` = #{release}
+			</if>
+			<if test=" null != browse ">
+				AND browse = #{browse}
+			</if>
+			<if test=" null != price ">
+				AND price = #{price}
+			</if>
+			<if test=" null != cprice ">
+				AND cprice = #{cprice}
+			</if>
+			<if test=" null != sale ">
+				AND sale = #{sale}
+			</if>
+			<if test=" null != sell ">
+				AND sell = #{sell}
+			</if>
+			<if test=" null != status ">
+				AND status = #{status}
+			</if>
+		</where>
+		ORDER BY `create` asc
+		<if test=" null != start and null != limit">
+			LIMIT #{start},#{limit}
+		</if>
+
+	</select>
+
+	<select id="findVoByChapterId" resultMap="BookChapter_Vo">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM book_chapter
+		WHERE chapter_id = #{id}
+	</select>
+	
+	<select id="findXmlByChapterId" resultMap="Chapter_Xml">
+		SELECT c.chapter_id as id,c.title,c.word as words,c.price,c.is_vip as vip,c.content,v.price as priceunit,u.release as updatetime
+		FROM book_chapter c
+		inner join book_update u
+		on u.book_id = c.book_id
+		left join vip_price v
+		on v.category_id = 1
+		WHERE c.chapter_id = #{chapterId}
+		and c.status = 0
+	</select>
+
+	<select id="findVoByBookVolum" resultMap="BookChapter_Vo">
+		SELECT
+		chapter_id,book_id,volume_id,title,intro,word,`create`,`release`,browse,price,cprice,sale,sell,status,is_vip
+		FROM book_chapter
+		where book_id = #{bookId} AND volume_id = #{volumeId}
+		<if test=" null != status ">
+			AND status = #{status}
+		</if>
+		<if test=" null == status ">
+			AND `status` = 0
+		</if>
+		ORDER BY `create` ASC
+	</select>
+	
+	<select id="findXmlByBookVolum" resultMap="BookChapter_Xml">
+		SELECT chapter_id as id,title
+		FROM book_chapter
+		where book_id = #{bookId} AND volume_id = #{volumeId}
+		<if test=" null != status ">
+			AND status = #{status}
+		</if>
+		<if test=" null != offsetChapId ">
+			AND chapter_id > #{offsetChapId}
+		</if>
+		ORDER BY `create` ASC
+	</select>
+	
+	<select id="find360XmlByBookVolum" resultMap="SimChapter_RM">
+		SELECT chapter_id,title
+		FROM book_chapter
+		where book_id = #{bookId} AND volume_id = #{volumeId}
+		AND status = 0
+		AND title != ''
+		<if test=" null != offsetChapId ">
+			AND chapter_id > #{offsetChapId}
+		</if>
+		ORDER BY chapter_id ASC
+	</select>
+
+	<select id="findVoByVolumLimit" resultMap="BookChapter_Vo">
+		SELECT chapter_id,book_id,content,volume_id,title,intro,word,`create`,`release`,browse,price,cprice,sale,sell,status,is_vip
+		FROM book_chapter
+		where book_id = #{bookId} AND volume_id = #{volumeId} AND `status` = 0
+		ORDER BY `create` ASC
+		<if test=" null != start and null != limit">
+			LIMIT #{start},#{limit}
+		</if>
+	</select>
+
+	<select id="findByBookVolume" resultMap="BookChapter_RM">
+		SELECT book_id,word,content,chapter_id,title,`status`
+		FROM book_chapter
+		<where>
+			book_chapter.status != 2
+			<if test=" null != chapterId ">
+				AND chapter_id = #{chapterId}
+			</if>
+			<if test=" null != bookId ">
+				AND book_id = #{bookId}
+			</if>
+			<if test=" null != volumeId ">
+				AND volume_id = #{volumeId}
+			</if>
+			<if test=" null != title ">
+				AND title = #{title}
+			</if>
+		</where>
+		ORDER BY `create` asc
+		<if test=" null != start and null != limit">
+			LIMIT #{start},#{limit}
+		</if>
+
+	</select>
+	
+	<select id="findSimByVolume" resultMap="SimChapter_RM">
+		SELECT chapter_id,title
+		FROM book_chapter
+		<where>
+			book_chapter.status = 0
+			<if test=" null != bookId ">
+				AND book_id = #{bookId}
+			</if>
+			<if test=" null != volumeId ">
+				AND volume_id = #{volumeId}
+			</if>
+		</where>
+		ORDER BY chapter_id,`create` asc
+	</select>
+
+	<select id="findById" resultMap="BookChapter_RM" parameterType="java.lang.Long">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM book_chapter
+		WHERE chapter_id = #{id}
+	</select>
+	
+	<select id="findSimListByBookId" resultMap="BookChapter_RM" parameterType="java.lang.Integer">
+		SELECT chapter_id,title
+		FROM book_chapter
+		WHERE chapter_id = #{chapterId}
+	</select>
+
+	<select id="findCountChapters" resultMap="BookChapter_Vo">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM book_chapter
+		WHERE book_id=#{bookId} AND chapter_id>=#{chapterId}
+		ORDER BY chapter_id asc
+		LIMIT 0,#{count}
+	</select>
+
+	<select id="findRestChapters" resultMap="BookChapter_Vo">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM book_chapter
+		WHERE book_id=#{bookId} AND chapter_id>=#{chapterId}
+	</select>
+
+	<select id="getVipChapterCount" resultType="int">
+		SELECT COUNT(1)
+		FROM
+		book_chapter
+		WHERE book_id=#{bookId} AND chapter_id >= #{chapterId} AND
+		is_vip = 1
+	</select>
+
+	<select id="findPreChapterId" resultType="java.lang.Integer">
+		select chapter_id
+		from book_chapter
+		where book_id=#{bookId} and chapter_id &gt; #{chapterId}
+		order by chapter_id asc
+		limit 0,1
+	</select>
+
+	<update id="update" parameterType="BookChapter">
+		UPDATE book_chapter
+		SET
+		<if test=" null != chapterId ">
+			chapter_id = #{chapterId},
+		</if>
+		<if test=" null != bookId ">
+			book_id = #{bookId},
+		</if>
+		<if test=" null != volumeId ">
+			volume_id = #{volumeId},
+		</if>
+		<if test=" null != title ">
+			title = #{title},
+		</if>
+		<if test=" null != intro ">
+			intro = #{intro},
+		</if>
+		<if test=" null != content ">
+			content = #{content},
+		</if>
+		<if test=" null != word ">
+			word = #{word},
+		</if>
+		<if test=" null != create ">
+			`create` = #{create},
+		</if>
+		<if test=" null != release ">
+			`release` = #{release},
+		</if>
+		<if test=" null != browse ">
+			browse = #{browse},
+		</if>
+		<if test=" null != price ">
+			price = #{price},
+		</if>
+		<if test=" null != cprice ">
+			cprice = #{cprice},
+		</if>
+		<if test=" null != sale ">
+			sale = #{sale},
+		</if>
+		<if test=" null != sell ">
+			sell = #{sell},
+		</if>
+		<if test=" null != status ">
+			status = #{status},
+		</if>
+		<if test=" null != isVip ">
+			is_vip = #{isVip},
+		</if>
+		chapter_id = #{chapterId}
+		WHERE chapter_id = #{chapterId}
+	</update>
+
+	<update id="updateByBookId" parameterType="BookChapter">
+		UPDATE book_chapter
+		SET
+		<if test=" null != price ">
+			price = #{price},
+		</if>
+		<if test=" null != cprice ">
+			cprice = #{cprice},
+		</if>
+		<if test=" null != sale ">
+			sale = #{sale},
+		</if>
+		<if test=" null != sell ">
+			sell = #{sell},
+		</if>
+		<if test=" null != status ">
+			status = #{status},
+		</if>
+		<if test=" null != isVip ">
+			is_vip = #{isVip},
+		</if>
+		book_id = #{bookId}
+		WHERE book_id = #{bookId}
+	</update>
+
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean id="dataSource_club" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${club.db.driver}" />
+		<property name="url" value="${club.db.url}" />
+		<property name="username" value="${club.db.username}" />
+		<property name="password" value="${club.db.password}" />
+		<property name="connectionProperties" value="${club.db.connectionProperties}" />
+		<property name="maxActive" value="${club.db.maxActive}" />
+		<property name="initialSize" value="${club.db.initialSize}" />
+		<property name="maxIdle" value="${club.db.maxIdle}" />
+		<property name="minIdle" value="${club.db.minIdle}" />
+		<property name="minEvictableIdleTimeMillis" value="${club.db.minEvictableIdleTimeMillis}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${club.db.timeBetweenEvictionRunsMillis}" />
+		<property name="validationQuery" value="${club.db.validationQuery}" />
+	</bean>
+	
+	
+	<bean id="transactionManager_club" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource_club" />
+	</bean>
+
+	<bean id="jdbcTemplate_club" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource">
+			<ref bean="dataSource_club" />
+		</property>
+	</bean>
+
+	<bean id="sqlSessionFactory_club" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource_club" />
+		<property name="configLocation" value="classpath:/mybatis/mybatis-config-club.xml" />
+		<property name="mapperLocations" value="classpath:/mappers/club/*.xml" />
+	</bean>
+
+	<bean id="sqlSession_club" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory_club" />
+	</bean>
+
+	<!-- 自动扫描 mapper 接口 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.doogua.api.dao.club,com.doogua.api.dao.club.*" />
+		<property name="sqlSessionTemplateBeanName" value="sqlSession_club" />
+	</bean>
+
+	<!-- 使用annotation定义事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager_club" proxy-target-class="true" />
+
+</beans>
