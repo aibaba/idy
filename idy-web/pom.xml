@@ -13,9 +13,9 @@
 	</properties>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>dg-coop-web</artifactId>
+	<artifactId>idy-web</artifactId>
 	<packaging>war</packaging>
-	<name>dg-coop-web</name>
+	<name>idy-web</name>
 	<version>${project.version}</version>
 	<groupId>com.doogua.coop</groupId>
 
