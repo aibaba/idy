@@ -38,13 +38,13 @@ public class CodeUtils {
 	
 	static String jdbcDriver = "com.mysql.jdbc.Driver";
 	
-	static String DB = "dg_club";
+	static String DB = "idy";
 
-	static String jdbcUrl = "jdbc:mysql://10.255.209.155:8306/" + DB;
+	static String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/" + DB;
 	
 	static String userName = "root";
 	
-	static String password= "root";
+	static String password= "243221";
 	
 	static final String java_file_type = ".java";
 	
@@ -52,7 +52,7 @@ public class CodeUtils {
 	
 	static final String division = "_";
 	
-	static final String basePath = "D:/files/";//生成文件的根目录
+	static final String basePath = "D:/generate/";//生成文件的根目录
 	
 	static String author = "gaopeng";
 	
@@ -71,13 +71,13 @@ public class CodeUtils {
 	 */
 	static Map<String, String> primaryMap = new HashMap<String, String>();
 	
-	static String doMainPath = "com.doogua.api.bean.club.";
+	static String doMainPath = "com.idy.bean.";
 	
-	static String baseDomainPath = "com.doogua.api.common.base.";
+	static String baseDomainPath = "com.idy.base.";
 	
-	static String daoPath = "com.doogua.api.dao.club.";
+	static String daoPath = "com.idy.dao.";
 	
-	static String servicePath = "com.doogua.api.service.club.";
+	static String servicePath = "com.idy.service.";
 	
 	static boolean printAlias = true;
 	
@@ -138,9 +138,6 @@ public class CodeUtils {
 		List<String> tables = MysqlUtils.getAllTables();
 		System.out.println(String.format("总计：%s张表", tables.size()));
 		for(String table : tables){
-			if(!"cooperation_intro_detail".equals(table)) {
-				continue;
-			}
 			String fileName = table.replaceFirst(table.substring(0, 1), table.substring(0, 1).toUpperCase());
 			fileName = buildName(fileName);
 			writeBeanFile(fileName, table);
@@ -598,7 +595,7 @@ public class CodeUtils {
 		}
 		
 		if(CodeUtils.fieldMap.get(type) == null || "".equals(CodeUtils.fieldMap.get(type))) {
-			System.out.println(type + " can not be relfected！");
+			System.err.println(type + " can not be relfected！");
 			return "String " + CodeUtils.buildName(name);
 		}
 		
