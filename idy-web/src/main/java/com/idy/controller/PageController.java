@@ -1,34 +1,36 @@
 package com.idy.controller;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.idy.redis.DgShardedJedis;
-
 /**
- * 对外合作接口：分销
- * 2015-04-15 与小米对接
- * @author gaopengbd
- *
+ *@Description: 
+ *@author penggao15@creditease.cn
+ *@date 2015年11月9日 下午4:01:51 
+ *@version V1.0
  */
 @Controller
-@RequestMapping("/360Book")
-public class CoopDistriTo360Controller {
+@RequestMapping("")
+public class PageController {
 	
-	@Resource(name = "jedisClient")
-	private DgShardedJedis jedis;
+	protected static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(PageController.class);
 	
-	protected static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CoopDistriTo360Controller.class);
-	
-	public CoopDistriTo360Controller(){
-		super();
-	}
+	@RequestMapping(value = "/{num}")
+    public String mapping(
+            HttpServletRequest request, HttpServletResponse response,
+            @PathVariable String num,//sheet的编号
+            Model model) {
+		model.addAttribute("num", num);
+		
+		return "excel/sheet" + num;
+    }
 	
 	/**
 	 * 获取全部的书,包括增量接口

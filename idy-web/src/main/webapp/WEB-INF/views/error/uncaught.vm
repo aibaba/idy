@@ -1,0 +1,13 @@
+#if($!{_debug}&&$!exception)
+    <div style="color:red;font-size: 12px; ">
+		Unexpect：$!{exception}  $!{exception.getMessage()}
+		</br>Caused by:</br>
+		#foreach($element in $!{exception.getStackTrace()})
+			$element
+		#end
+    </div>
+#else
+	<h1>对不起，您此次的请求处理出现问题！
+	<a href="/index/">返回首页</a>
+	</h1>
+#end

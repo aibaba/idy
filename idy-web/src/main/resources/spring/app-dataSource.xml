@@ -13,14 +13,14 @@
 		<property name="url" value="${db.url}" />
 		<property name="username" value="${db.username}" />
 		<property name="password" value="${db.password}" />
-		<property name="connectionProperties" value="${db.connectionProperties}" />
-		<property name="maxActive" value="${db.maxActive}" />
-		<property name="initialSize" value="${db.initialSize}" />
-		<property name="maxIdle" value="${db.maxIdle}" />
-		<property name="minIdle" value="${db.minIdle}" />
-		<property name="minEvictableIdleTimeMillis" value="${db.minEvictableIdleTimeMillis}" />
-		<property name="timeBetweenEvictionRunsMillis" value="${db.timeBetweenEvictionRunsMillis}" />
-		<property name="validationQuery" value="${db.validationQuery}" />
+		<property name="connectionProperties" value="useUnicode=true;characterEncoding=UTF8;rewriteBatchedStatements=true;socketTimeout=160000;autoReconnectForPools=true" />
+		<property name="maxActive" value="40" />
+		<property name="initialSize" value="1" />
+		<property name="maxIdle" value="30" />
+		<property name="minIdle" value="2" />
+		<property name="minEvictableIdleTimeMillis" value="600000" />
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<property name="validationQuery" value="select 1" />
 	</bean>
 	
 	

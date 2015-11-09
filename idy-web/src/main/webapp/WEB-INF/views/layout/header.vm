@@ -1,0 +1,35 @@
+#set( $layout = "./layout/empty.vm" )
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<base href="$request.getScheme()://$request.getServerName():$request.getServerPort()$request.getContextPath()/">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+<title>#if($!title)$!title#else自助CRM系统 #end</title>
+<link rel="stylesheet" type="text/css" href="css/login.css" />
+<link rel="stylesheet" type="text/css" href="css/index.css" />
+
+<link href="css/euithemes/default/easyui.css" rel="stylesheet" type="text/css" />
+<link href="css/euithemes/icon.css" rel="stylesheet" type="text/css" />
+<link href="css/common.css" rel="stylesheet" type="text/css" />
+<link href="css/table.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="js/json2.js"></script>
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
+<script type="text/javascript" src="js/jquery.jsPlumb-1.3.16-all-min.js"></script>
+<script type="text/javascript" src="js/jquery.easyui.min-1.3.3.js"></script>
+<script type="text/javascript" src="js/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/date.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+</head>
+
+<body>
+		<div class="header clear">
+			<h1 class="leftF"><a href=""><img src="images/logo_bg.png" alt="IDY"/></a></h1>
+		</div>
+		<div class="nav">
+			<h2>
+			</h2>
+		</div>	

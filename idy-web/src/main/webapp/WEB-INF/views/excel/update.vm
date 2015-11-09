@@ -1,0 +1,166 @@
+<base href="$request.getScheme()://$request.getServerName():$request.getServerPort()$request.getContextPath()/">
+<style type="text/css">
+	table{line-height: 10px;}
+</style>
+<link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="themes/icon.css">
+<script type="text/javascript" src="js/jquery.easyui.min-1.3.3.js"></script>
+<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="js/locale/easyui-lang-zh_CN.js"></script>   
+ 
+
+<div class="main">
+			<div class="breadcrumbs">
+				<a href="">首页</a><span class="space">></span><a href="user/list">账号管理</a><span class="space">></span>修改账号
+			</div>
+			<div class="box creat-user">
+				<div class="box-title">
+					修改账号
+				</div>
+				<div class="box-con">
+					<h4>账号基本信息</h4>					
+					<ul class="form-list">
+						<li hidden><label for=""><span class="required">*</span>ID ：</label><input id="userId" type="text" name="id" value="$!{user.id}"/></li>
+						<li><label for=""><span class="required">*</span>用 户 名 ：</label><input id="userName" type="text" name="userName" value="$!{user.userName}"/></li>
+						<li><label for=""><span class="required">*</span>密　　码 ：</label><input id="password" type="password" name="password" value="$!{user.password}"/></li>
+						<li><label for=""><span class="required">*</span>确认密码 ：</label><input id="confirm" type="password" name="confirm" value="$!{user.password}"/></li>
+						<li><label for=""><span class="required">*</span>账户状态 ：</label>
+							<select id="statusSelect" name="status">
+								<option value="0">正常</option>
+							</select></li>
+						<li><label for=""><span class="required">*</span>入职日期 ：</label><input type="text" id="entryTime" class="easyui-datebox" value="$!{staff.entryDateStr}" name="entryTime"/></li>
+					</ul>					
+				</div>
+				#if($staffFlag)
+					<div class="box-con">
+						<h4>员工信息</h4>
+						<ul class="form-list list-columns">
+							<li><label for=""><span class="required">*</span>用 户 名 ：</label><input id="zhName" type="text" name="zhName" value="$!{staff.zhName}"/></li>
+							<li><label for=""><span class="required">*</span>英 文 名 ：</label><input id="enName" type="text" name="enName" value="$!{staff.enName}"/></li>
+							<li><label for=""><span class="space"></span>姓名拼音 ：</label><input id="zhSpell" type="text" name="zhSpell" value="$!{staff.zhSpell}"/></li>
+							<li><label for=""><span class="space"></span>员 工 号 ：</label><input id="number" type="text" name="number" value="$!{staff.number}"/></li>
+							<li><label for="">　 <span class="required">*</span>Email ：</label><input id="email" type="text" name="email" value="$!{staff.email}"/>　@dangdang.com</li>
+							<li></li>
+							<li><label for=""><span class="space"></span>手　　机 ：</label><input id="mobilePhone" type="text" name="mobilePhone" value="$!{staff.mobilePhone}"/></li>
+							<li><label for=""><span class="space"></span>电　　话 ：</label><input id="tel" type="text" name="tel" value="$!{staff.tel}"/></li>
+							<li><label for=""><span class="required">*</span>所属部门 ：</label>
+								<select id="departmentSelect" name="departmentId" style="width:150px">
+									<option value="0">未选择</option>
+									#foreach($dep in $departments)
+									<option value="$dep.id" #if($!department && $!department.name == $dep.name)  selected = "selected"  #end>$dep.name</option>
+									#end
+								</select></li>
+							<li><label for=""><span class="required">*</span>部门职位 ：</label>
+								<select id="positionSelect" name="positionId" style="width:150px">
+									<option value="0">未选择</option>
+									#foreach($p in $pList)
+									<option value="$position.id" #if($!p && $!p.name == $position.name)  selected = "selected"  #end>$p.name</option>
+									#end
+								</select></li>
+							<li><label for=""><span class="space"></span>所属团队 ：</label>
+								<select id="teamSelect" name="teamId" style="width:150px">
+									<option value="0" >未选择</option>
+								</select></li>
+							<li><label for=""><span class="space"></span>团队身份 ：</label>
+								<select id="identitySelect" name="identityId" style="width:150px">
+									<option value="0" >未选择</option>
+								</select></li>
+							<li><label for=""><span class="space"></span>所属二级团队 ：</label>
+								<select id="subTeamSelect" name="subTeamId" style="width:150px">
+									<option value="0">未选择</option>
+								</select></li>
+							<li><label for=""><span class="space"></span>二级团队身份：</label>
+								<select id="subIdentitySelect" name="subIdentityId" style="width:150px">
+									<option value="0">未选择</option>
+								</select></li>
+						</ul>					
+					</div>
+				#end
+				<div class="box-con">
+					<h4>角色权限</h4>	<span class="color-blue">+ </span><a href="javascript:addUserRole()">添加用户角色</a>
+					
+					<table style="line-height:38px;" id="roleTable">
+						<tr>
+							<th style="width:150px">角色</th>
+							<th style="width:250px"><select id="role"><option value="3">用户角色</option></select></th>
+							<th style="width:150px">操作</th>
+						</tr>
+						#if($userRoles && $userRoles.size() >0)
+							<tr>
+								<th style="width:150px">
+									#foreach($r in $userRoles)
+										$r.name &nbsp;
+									#end
+								</th>
+								<th style="width:250px"><select id="role"><option value="3">用户角色</option></select></th>
+								<th style="width:150px"><a class="color-red" onclick="delRole(1);">全部删除</a></th>
+							</tr>
+						#end
+					</table>					
+				</div>
+				<div class="btn-area">
+					<input id="updateForm" class="btn btn-sure" type="button" value="保存" /><input id="clearAll" class="btn btn-reset" type="reset" value="全部清空" />					
+				</div>
+			</div>
+</div>
+
+<div id="addUserRole" class="easyui-dialog">
+		<div class="box creat-user">
+    			<table style="width:400px">
+					<tr style="height:30px">
+						<th width="50px"></th>
+						<th width="50px">编号</th>
+						<th width="100px">角色名称</th>
+					</tr>
+					#foreach($role in $roles)
+						<tr style="height:30px">
+							<td><input type="checkbox" id="rid-$!{role.id}" name="userRoleName"></td>
+							<td>$!{role.id}</td>
+							<td>$!{role.name}</td>
+						</tr>
+					#end
+				</table>
+    		<div class="btn-area">
+    			<input id="addUserRoleBtn" class="btn btn-sure" type="submit" value="添加" /><input class="btn btn-cancle" type="button" value="取消" />					
+    		</div>
+        </div>
+	</div>
+
+<script type="text/javascript" src="js/account/account.js" charset="UTF-8"></script> 
+<script type="text/javascript">
+	$('#entryTime').datebox({
+        required:true,
+		panelWidth:200,
+		currentText:'今天',
+		closeText:'关闭',
+		okText:'确定',
+		formatter:function(date){ 
+            var y = date.getFullYear(); 
+            var m = date.getMonth()+1; 
+            var d = date.getDate(); 
+            return y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d); 
+    	}
+    }); 
+    
+function delRole(roleId){
+	var r=confirm("是否确定删除？");
+ 	if (r==true) {  
+		$.ajax({
+			type : "POST",
+			url : "user/delUserRole",
+			data:{"roleId":roleId,"userId":$('#userId').val()},
+			success : function(json) {
+				if(json>0){
+					alert("删除成功");
+					window.location.reload();
+				}else{
+					 alert("删除失败");
+				}
+			},
+		   error:function(r){
+			 console.info("网络异常！");
+		   }
+		});
+	};
+}
+</script>

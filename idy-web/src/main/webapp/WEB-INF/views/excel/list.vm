@@ -1,0 +1,146 @@
+<div class="main">
+		<div class="breadcrumbs">
+			<a href="/index">首页</a><span class="space">></span><a href="user/list">账号管理</a>
+		</div>
+		<div class="box creat-user">
+			<div class="box-title">
+				账号管理  &nbsp;&nbsp;&nbsp;<button type="button" id="createBtn" style="height: 25px;width: 60px;">创建</button>
+			</div>
+		</div>	
+		
+		<div class="box creat-user">
+			<div class="box-title">
+               	关键字:&nbsp;<input style="width: 200px;" type="text" id="keyword" name="keyword" value="$!{keyword}" placeholder="请输入用户名称..." maxlength="20" />
+                &nbsp;<button type="button" id="queryBtn" style="height: 25px;width: 60px;">搜索</button>
+                &nbsp;<button type="button" id="clearBtn" style="height: 25px;width: 60px;">清空</button>
+            </div>
+        </div>
+        
+</div>
+
+<div id="user_datagrid"></div>
+
+<script type="text/javascript">  
+#[[
+$(function(){
+
+	$("#queryBtn").click(loadData);
+	$("#clearBtn").click(clearQuery);
+	$("#createBtn").click(createuser);
+	
+	$('#user_datagrid').datagrid({
+		width:"99%",
+		nowrap: false,
+		pagination:true,
+		pageSize: 20,//每页显示的记录条数，默认为10 
+        pageList: [10,20,30,40,50],//可以设置每页记录条数的列表
+		method: 'post',
+		striped: true,
+		collapsible:true,
+		url:'user/query.json',
+		remoteSort: false,
+		idField:'id',
+		queryParams:packageData(),
+		rownumbers:false,
+		columns:[[
+			{field:'id',title:'用户ID',width:70,align:'center'},
+			{field:'userName',title:'用户名',width:90,align:'center'},
+			{field:'zhName',title:'中文名称',width:90,align:'center'},
+			//{field:'zhSpell',title:'中文拼音',width:90,align:'center'},
+			{field:'email',title:'邮箱',width:160,align:'center'},
+		 	{field:'depart',title:'部门',width:80,align:'center'},
+		 	{field:'position',title:'职位',width:80,align:'center'},
+		 	{field:'team',title:'团队',width:80,align:'center'},
+		 	{field:'identity',title:'身份',width:80,align:'center'},
+		 	{field:'roles',title:'角色',width:90,align:'center'},
+			{field:'status',title:'状态',width:60,align:'center',
+				formatter:function(r){
+		 				return statusValue[r];
+		 			},styler:function(r){
+		 				return statusStyler[r];
+		 			}
+		 	},
+			{field:'opt',title:'操作',width:100,align:'center',
+				formatter:function(value, row, index){
+					return '<a style="color:blue;" onclick="update(' + row.id + ');">修改</a>|<a style="color:red;" onclick="del(' + row.id + ');">删除</a>';
+				}
+			}
+		]],
+		onLoadError:function(){
+			$.messager.alert('Error','获取列表失败!请重试。','error');
+		}
+	});
+	
+	//设置分页控件 
+    var p = $('#user_datagrid').datagrid('getPager'); 
+    $(p).pagination({ 
+        pageSize: 20,//每页显示的记录条数，默认为10 
+        pageList: [10,20,30,40,50],//可以设置每页记录条数的列表 
+        beforePageText: '第',//页数文本框前显示的汉字 
+        afterPageText: '页    共 {pages} 页', 
+        displayMsg: '显示{from}到{to},共{total}记录' 
+    }); 
+	
+	var statusValue={
+		"0":"正常","1":"待激活","2":"废弃"
+		}
+	var statusStyler={
+		"0":"color:green","1":"color:grey", "2":"color:red"
+	}
+});
+
+function packageData(){
+	var data = {};
+	if($("#keyword").val() != '') {
+		data.userName = $("#keyword").val();
+	}
+	
+	return data;
+}
+
+function loadData(){
+	$('#user_datagrid').datagrid("load",packageData());
+}
+
+function createuser(){
+	window.location.href="http://doogua.dangdang.com/auth/user/account";
+}
+
+function keyDown_handler(e){
+	if(e.keyCode==13){
+		loadData();
+	}
+}
+
+function clearQuery() {
+	$(":text,#keyword").val("");
+	loadData();
+}
+
+function update(id){
+	window.location.href="http://doogua.dangdang.com/auth/user/"+id+"/update";
+}
+
+function del(id){
+	var r=confirm("是否确定删除？");
+ 	if (r==true) {  
+		$.ajax({
+			type : "POST",
+			url : "user/del",
+			data:{"ids":id},
+			success : function(json) {
+				if(json==0){
+					 alert("删除失败");
+				}else{
+					$('#user_datagrid').datagrid("reload");
+				}
+			},
+		   error:function(r){
+			 console.info("网络异常！");
+		   }
+		});
+	};
+}
+]]#
+
+</script>

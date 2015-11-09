@@ -18,8 +18,8 @@
         </layout>
     </appender>
     <category name="com.idy" additivity="false">
-        <priority value="${_log.com.idy.level}" />
-        <appender-ref ref="${_log.com.idy.appender}" />
+        <priority value="${_log.idy.level}" />
+        <appender-ref ref="${_log.idy.appender}" />
     </category>
     <root>
         <priority value="${_log.root.level}" />

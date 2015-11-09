@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
 	id="test_web" version="2.5">
 	
-  <display-name>book</display-name>
+  <display-name>idy</display-name>
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:spring/app-*.xml</param-value>

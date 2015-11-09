@@ -1,0 +1,6 @@
+<!--头部模板-->
+#parse("layout/header.vm")
+<!--主体页面-->
+<div class="main">$screen_content</div>
+<!--底部模板-->
+#parse("layout/footer.vm")

@@ -1,0 +1,27 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {margin: 0;padding: 0;}
+ol, ul {list-style-type: none;}
+img {border: 0 none;}
+a img {vertical-align: middle;}
+table {border-collapse: collapse;border-spacing: 0;}
+sup, sub {font-size: 100%;vertical-align: baseline;}
+body {background: none repeat scroll 0 0 #fff;color: #353535;font: 12px/2em "宋体",Helvetica,sans-serif;}
+a {color: #353535;text-decoration: none;}
+a:hover {text-decoration: underline;}
+.clear {zoom:1}
+.clear:after {clear: both;content: "clear";display: block;font-size: 0;height: 0;visibility: hidden;}
+.clearfix {clear: both;font-size: 0;height: 0;line-height: 0;}
+.leftF {float: left;}
+.rightF {float: right;}
+
+.login{position:absolute;top:50%;left:0;height: 407px;width: 100%;margin-top: -210px;background: url(../images/login_bg.png) no-repeat center top #030308;}
+.login-bg,.login-box{position:absolute;top:50%;left:50%;width: 470px;height: 310px;margin:-155px 0 0 -235px;}
+.login-bg{background-color: #000;opacity: 0.15;filter: alpha(opacity:15);z-index: 9;}
+.login-box{color:#fff;z-index: 99;text-align: center;}
+.login-box h2{font:30px/50px Microsoft YaHei;margin: 30px 0 13px;}
+.login-box input{color:#fff;height: 37px;line-height: 37px;border:none;border-radius:3px;}
+.login-box input[type="text"],.login-box input[type="password"]{font-size: 14px;padding:2px 10px;width: 290px;border:solid 1px #8d8798;background-color: #090a1c;margin:7px 0;}
+.login-box p{height:33px;}
+.error{font:12px/19px 'Microsoft YaHei';color:red;padding:0 10px;background-color: #d9d9e1;}
+.login-box .sub-btn,.login-box input[type="reset"]{font-size: 20px;font-family: 'Microsoft YaHei';margin:0 30px;cursor: pointer;}
+.login-box .sub-btn{background-color: #405edb;width: 160px;}
+.login-box input[type="reset"]{background-color: #7a7e8d;width: 90px;}

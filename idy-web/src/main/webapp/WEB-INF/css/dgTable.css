@@ -1,0 +1,6 @@
+table {border-collapse: collapse;border-spacing: 0;}
+table{line-height: 38px;}
+th,td{padding:0 5px;border: solid 2px #fff;}
+th{background-color: #eff2f9;}
+td{background-color: #fcfcfd;}
+.creat-user table{width: 700px;text-align: center;}

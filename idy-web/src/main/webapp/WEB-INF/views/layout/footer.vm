@@ -1,0 +1,8 @@
+#set( $layout = "./layout/empty.vm" )
+
+		<div class="footer">
+			<p>技术支持：杜佳    电话：010 - 5201314      手机：13966666666     Email: superpeng2000@163.com</p>
+			<p>dangdang.com</p>
+		</div>
+	</body>
+</html>
