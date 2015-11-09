@@ -9,7 +9,7 @@
         </layout>
     </appender>
     <appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${_log.path}/dg_coop.log" />
+        <param name="file" value="${_log.path}/idy.log" />
         <param name="datePattern" value="'.'yyyy-MM-dd" />
         <param name="encoding" value="UTF-8" />
         <layout class="org.apache.log4j.PatternLayout">
@@ -17,9 +17,9 @@
                 value="%d [%t] [%7r] %6p - %30.30c - %m%n" />
         </layout>
     </appender>
-    <category name="com.dg" additivity="false">
-        <priority value="${_log.com.dg.level}" />
-        <appender-ref ref="${_log.com.dg.appender}" />
+    <category name="com.idy" additivity="false">
+        <priority value="${_log.com.idy.level}" />
+        <appender-ref ref="${_log.com.idy.appender}" />
     </category>
     <root>
         <priority value="${_log.root.level}" />

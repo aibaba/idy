@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idy.dao.ExcelMapper">
+	<resultMap id="Excel_RM" type="Excel">
+		<id property="id" column="id" />
+		<id property="c01" column="c01" />
+		<id property="c02" column="c02" />
+		<id property="c03" column="c03" />
+		<id property="c04" column="c04" />
+		<id property="c05" column="c05" />
+		<id property="c06" column="c06" />
+		<id property="c07" column="c07" />
+		<id property="c08" column="c08" />
+		<id property="c09" column="c09" />
+		<id property="c10" column="c10" />
+		<id property="c11" column="c11" />
+		<id property="c12" column="c12" />
+		<id property="c13" column="c13" />
+		<id property="c14" column="c14" />
+		<id property="c15" column="c15" />
+		<id property="c16" column="c16" />
+		<id property="c17" column="c17" />
+		<id property="c18" column="c18" />
+		<id property="c19" column="c19" />
+		<id property="c20" column="c20" />
+		<id property="c21" column="c21" />
+		<id property="c22" column="c22" />
+		<id property="c23" column="c23" />
+		<id property="c24" column="c24" />
+		<id property="c25" column="c25" />
+		<id property="c26" column="c26" />
+		<id property="c27" column="c27" />
+		<id property="c28" column="c28" />
+		<id property="c29" column="c29" />
+		<id property="c30" column="c30" />
+		<id property="c31" column="c31" />
+		<id property="c32" column="c32" />
+		<id property="c33" column="c33" />
+		<id property="c34" column="c34" />
+		<id property="c35" column="c35" />
+		<id property="c36" column="c36" />
+		<id property="c37" column="c37" />
+		<id property="c38" column="c38" />
+		<id property="c39" column="c39" />
+		<id property="c40" column="c40" />
+		<id property="c41" column="c41" />
+		<id property="c42" column="c42" />
+		<id property="c43" column="c43" />
+		<id property="c44" column="c44" />
+		<id property="c45" column="c45" />
+		<id property="c46" column="c46" />
+		<id property="c47" column="c47" />
+		<id property="c48" column="c48" />
+		<id property="c49" column="c49" />
+		<id property="c50" column="c50" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,`c01`,`c02`,`c03`,`c04`,`c05`,`c06`,`c07`,`c08`,`c09`,`c10`,`c11`,`c12`,`c13`,`c14`,`c15`,`c16`,`c17`,`c18`,`c19`,`c20`,`c21`,`c22`,`c23`,`c24`,`c25`,`c26`,`c27`,`c28`,`c29`,`c30`,`c31`,`c32`,`c33`,`c34`,`c35`,`c36`,`c37`,`c38`,`c39`,`c40`,`c41`,`c42`,`c43`,`c44`,`c45`,`c46`,`c47`,`c48`,`c49`,`c50`
+	</sql>
+
+	<select id="count" resultType="long">
+		SELECT COUNT(1) FROM excel
+		<where>
+			<if test=" null != c01 ">
+				AND `c01` = #{c01}
+			</if>
+			<if test=" null != c02 ">
+				AND `c02` = #{c02}
+			</if>
+			<if test=" null != c03 ">
+				AND `c03` = #{c03}
+			</if>
+			<if test=" null != c04 ">
+				AND `c04` = #{c04}
+			</if>
+			<if test=" null != c05 ">
+				AND `c05` = #{c05}
+			</if>
+			<if test=" null != c06 ">
+				AND `c06` = #{c06}
+			</if>
+			<if test=" null != c07 ">
+				AND `c07` = #{c07}
+			</if>
+			<if test=" null != c08 ">
+				AND `c08` = #{c08}
+			</if>
+			<if test=" null != c09 ">
+				AND `c09` = #{c09}
+			</if>
+			<if test=" null != c10 ">
+				AND `c10` = #{c10}
+			</if>
+			<if test=" null != c11 ">
+				AND `c11` = #{c11}
+			</if>
+			<if test=" null != c12 ">
+				AND `c12` = #{c12}
+			</if>
+			<if test=" null != c13 ">
+				AND `c13` = #{c13}
+			</if>
+			<if test=" null != c14 ">
+				AND `c14` = #{c14}
+			</if>
+			<if test=" null != c15 ">
+				AND `c15` = #{c15}
+			</if>
+			<if test=" null != c16 ">
+				AND `c16` = #{c16}
+			</if>
+			<if test=" null != c17 ">
+				AND `c17` = #{c17}
+			</if>
+			<if test=" null != c18 ">
+				AND `c18` = #{c18}
+			</if>
+			<if test=" null != c19 ">
+				AND `c19` = #{c19}
+			</if>
+			<if test=" null != c20 ">
+				AND `c20` = #{c20}
+			</if>
+			<if test=" null != c21 ">
+				AND `c21` = #{c21}
+			</if>
+			<if test=" null != c22 ">
+				AND `c22` = #{c22}
+			</if>
+			<if test=" null != c23 ">
+				AND `c23` = #{c23}
+			</if>
+			<if test=" null != c24 ">
+				AND `c24` = #{c24}
+			</if>
+			<if test=" null != c25 ">
+				AND `c25` = #{c25}
+			</if>
+			<if test=" null != c26 ">
+				AND `c26` = #{c26}
+			</if>
+			<if test=" null != c27 ">
+				AND `c27` = #{c27}
+			</if>
+			<if test=" null != c28 ">
+				AND `c28` = #{c28}
+			</if>
+			<if test=" null != c29 ">
+				AND `c29` = #{c29}
+			</if>
+			<if test=" null != c30 ">
+				AND `c30` = #{c30}
+			</if>
+			<if test=" null != c31 ">
+				AND `c31` = #{c31}
+			</if>
+			<if test=" null != c32 ">
+				AND `c32` = #{c32}
+			</if>
+			<if test=" null != c33 ">
+				AND `c33` = #{c33}
+			</if>
+			<if test=" null != c34 ">
+				AND `c34` = #{c34}
+			</if>
+			<if test=" null != c35 ">
+				AND `c35` = #{c35}
+			</if>
+			<if test=" null != c36 ">
+				AND `c36` = #{c36}
+			</if>
+			<if test=" null != c37 ">
+				AND `c37` = #{c37}
+			</if>
+			<if test=" null != c38 ">
+				AND `c38` = #{c38}
+			</if>
+			<if test=" null != c39 ">
+				AND `c39` = #{c39}
+			</if>
+			<if test=" null != c40 ">
+				AND `c40` = #{c40}
+			</if>
+			<if test=" null != c41 ">
+				AND `c41` = #{c41}
+			</if>
+			<if test=" null != c42 ">
+				AND `c42` = #{c42}
+			</if>
+			<if test=" null != c43 ">
+				AND `c43` = #{c43}
+			</if>
+			<if test=" null != c44 ">
+				AND `c44` = #{c44}
+			</if>
+			<if test=" null != c45 ">
+				AND `c45` = #{c45}
+			</if>
+			<if test=" null != c46 ">
+				AND `c46` = #{c46}
+			</if>
+			<if test=" null != c47 ">
+				AND `c47` = #{c47}
+			</if>
+			<if test=" null != c48 ">
+				AND `c48` = #{c48}
+			</if>
+			<if test=" null != c49 ">
+				AND `c49` = #{c49}
+			</if>
+			<if test=" null != c50 ">
+				AND `c50` = #{c50}
+			</if>
+		</where>
+	</select>
+
+	<select id="countAll" resultType="long">
+		SELECT COUNT(1) FROM excel
+	</select>
+
+	<insert id="create" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO excel (<include refid="Base_Column_List" />)
+		VALUES (#{id},#{c01},#{c02},#{c03},#{c04},#{c05},#{c06},#{c07},#{c08},#{c09},#{c10},#{c11},#{c12},#{c13},#{c14},#{c15},#{c16},#{c17},#{c18},#{c19},#{c20},#{c21},#{c22},#{c23},#{c24},#{c25},#{c26},#{c27},#{c28},#{c29},#{c30},#{c31},#{c32},#{c33},#{c34},#{c35},#{c36},#{c37},#{c38},#{c39},#{c40},#{c41},#{c42},#{c43},#{c44},#{c45},#{c46},#{c47},#{c48},#{c49},#{c50})
+	</insert>
+
+	<delete id="del" parameterType="Excel">
+		DELETE FROM excel
+		<where>
+			<if test=" null != c01 ">
+				AND `c01` = #{c01}
+			</if>
+			<if test=" null != c02 ">
+				AND `c02` = #{c02}
+			</if>
+			<if test=" null != c03 ">
+				AND `c03` = #{c03}
+			</if>
+			<if test=" null != c04 ">
+				AND `c04` = #{c04}
+			</if>
+			<if test=" null != c05 ">
+				AND `c05` = #{c05}
+			</if>
+			<if test=" null != c06 ">
+				AND `c06` = #{c06}
+			</if>
+			<if test=" null != c07 ">
+				AND `c07` = #{c07}
+			</if>
+			<if test=" null != c08 ">
+				AND `c08` = #{c08}
+			</if>
+			<if test=" null != c09 ">
+				AND `c09` = #{c09}
+			</if>
+			<if test=" null != c10 ">
+				AND `c10` = #{c10}
+			</if>
+			<if test=" null != c11 ">
+				AND `c11` = #{c11}
+			</if>
+			<if test=" null != c12 ">
+				AND `c12` = #{c12}
+			</if>
+			<if test=" null != c13 ">
+				AND `c13` = #{c13}
+			</if>
+			<if test=" null != c14 ">
+				AND `c14` = #{c14}
+			</if>
+			<if test=" null != c15 ">
+				AND `c15` = #{c15}
+			</if>
+			<if test=" null != c16 ">
+				AND `c16` = #{c16}
+			</if>
+			<if test=" null != c17 ">
+				AND `c17` = #{c17}
+			</if>
+			<if test=" null != c18 ">
+				AND `c18` = #{c18}
+			</if>
+			<if test=" null != c19 ">
+				AND `c19` = #{c19}
+			</if>
+			<if test=" null != c20 ">
+				AND `c20` = #{c20}
+			</if>
+			<if test=" null != c21 ">
+				AND `c21` = #{c21}
+			</if>
+			<if test=" null != c22 ">
+				AND `c22` = #{c22}
+			</if>
+			<if test=" null != c23 ">
+				AND `c23` = #{c23}
+			</if>
+			<if test=" null != c24 ">
+				AND `c24` = #{c24}
+			</if>
+			<if test=" null != c25 ">
+				AND `c25` = #{c25}
+			</if>
+			<if test=" null != c26 ">
+				AND `c26` = #{c26}
+			</if>
+			<if test=" null != c27 ">
+				AND `c27` = #{c27}
+			</if>
+			<if test=" null != c28 ">
+				AND `c28` = #{c28}
+			</if>
+			<if test=" null != c29 ">
+				AND `c29` = #{c29}
+			</if>
+			<if test=" null != c30 ">
+				AND `c30` = #{c30}
+			</if>
+			<if test=" null != c31 ">
+				AND `c31` = #{c31}
+			</if>
+			<if test=" null != c32 ">
+				AND `c32` = #{c32}
+			</if>
+			<if test=" null != c33 ">
+				AND `c33` = #{c33}
+			</if>
+			<if test=" null != c34 ">
+				AND `c34` = #{c34}
+			</if>
+			<if test=" null != c35 ">
+				AND `c35` = #{c35}
+			</if>
+			<if test=" null != c36 ">
+				AND `c36` = #{c36}
+			</if>
+			<if test=" null != c37 ">
+				AND `c37` = #{c37}
+			</if>
+			<if test=" null != c38 ">
+				AND `c38` = #{c38}
+			</if>
+			<if test=" null != c39 ">
+				AND `c39` = #{c39}
+			</if>
+			<if test=" null != c40 ">
+				AND `c40` = #{c40}
+			</if>
+			<if test=" null != c41 ">
+				AND `c41` = #{c41}
+			</if>
+			<if test=" null != c42 ">
+				AND `c42` = #{c42}
+			</if>
+			<if test=" null != c43 ">
+				AND `c43` = #{c43}
+			</if>
+			<if test=" null != c44 ">
+				AND `c44` = #{c44}
+			</if>
+			<if test=" null != c45 ">
+				AND `c45` = #{c45}
+			</if>
+			<if test=" null != c46 ">
+				AND `c46` = #{c46}
+			</if>
+			<if test=" null != c47 ">
+				AND `c47` = #{c47}
+			</if>
+			<if test=" null != c48 ">
+				AND `c48` = #{c48}
+			</if>
+			<if test=" null != c49 ">
+				AND `c49` = #{c49}
+			</if>
+			<if test=" null != c50 ">
+				AND `c50` = #{c50}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM excel WHERE id = #{id}
+	</delete>
+
+	<select id="findById" resultMap="Excel_RM" parameterType="java.lang.Long">
+		SELECT <include refid="Base_Column_List" /> 
+		FROM excel 
+		WHERE id = #{id}
+	</select>
+
+	<update id="update" parameterType="Excel">
+		UPDATE excel
+		SET
+			<if test=" null != c01 ">
+				 `c01` = #{c01},
+			</if>
+			<if test=" null != c02 ">
+				 `c02` = #{c02},
+			</if>
+			<if test=" null != c03 ">
+				 `c03` = #{c03},
+			</if>
+			<if test=" null != c04 ">
+				 `c04` = #{c04},
+			</if>
+			<if test=" null != c05 ">
+				 `c05` = #{c05},
+			</if>
+			<if test=" null != c06 ">
+				 `c06` = #{c06},
+			</if>
+			<if test=" null != c07 ">
+				 `c07` = #{c07},
+			</if>
+			<if test=" null != c08 ">
+				 `c08` = #{c08},
+			</if>
+			<if test=" null != c09 ">
+				 `c09` = #{c09},
+			</if>
+			<if test=" null != c10 ">
+				 `c10` = #{c10},
+			</if>
+			<if test=" null != c11 ">
+				 `c11` = #{c11},
+			</if>
+			<if test=" null != c12 ">
+				 `c12` = #{c12},
+			</if>
+			<if test=" null != c13 ">
+				 `c13` = #{c13},
+			</if>
+			<if test=" null != c14 ">
+				 `c14` = #{c14},
+			</if>
+			<if test=" null != c15 ">
+				 `c15` = #{c15},
+			</if>
+			<if test=" null != c16 ">
+				 `c16` = #{c16},
+			</if>
+			<if test=" null != c17 ">
+				 `c17` = #{c17},
+			</if>
+			<if test=" null != c18 ">
+				 `c18` = #{c18},
+			</if>
+			<if test=" null != c19 ">
+				 `c19` = #{c19},
+			</if>
+			<if test=" null != c20 ">
+				 `c20` = #{c20},
+			</if>
+			<if test=" null != c21 ">
+				 `c21` = #{c21},
+			</if>
+			<if test=" null != c22 ">
+				 `c22` = #{c22},
+			</if>
+			<if test=" null != c23 ">
+				 `c23` = #{c23},
+			</if>
+			<if test=" null != c24 ">
+				 `c24` = #{c24},
+			</if>
+			<if test=" null != c25 ">
+				 `c25` = #{c25},
+			</if>
+			<if test=" null != c26 ">
+				 `c26` = #{c26},
+			</if>
+			<if test=" null != c27 ">
+				 `c27` = #{c27},
+			</if>
+			<if test=" null != c28 ">
+				 `c28` = #{c28},
+			</if>
+			<if test=" null != c29 ">
+				 `c29` = #{c29},
+			</if>
+			<if test=" null != c30 ">
+				 `c30` = #{c30},
+			</if>
+			<if test=" null != c31 ">
+				 `c31` = #{c31},
+			</if>
+			<if test=" null != c32 ">
+				 `c32` = #{c32},
+			</if>
+			<if test=" null != c33 ">
+				 `c33` = #{c33},
+			</if>
+			<if test=" null != c34 ">
+				 `c34` = #{c34},
+			</if>
+			<if test=" null != c35 ">
+				 `c35` = #{c35},
+			</if>
+			<if test=" null != c36 ">
+				 `c36` = #{c36},
+			</if>
+			<if test=" null != c37 ">
+				 `c37` = #{c37},
+			</if>
+			<if test=" null != c38 ">
+				 `c38` = #{c38},
+			</if>
+			<if test=" null != c39 ">
+				 `c39` = #{c39},
+			</if>
+			<if test=" null != c40 ">
+				 `c40` = #{c40},
+			</if>
+			<if test=" null != c41 ">
+				 `c41` = #{c41},
+			</if>
+			<if test=" null != c42 ">
+				 `c42` = #{c42},
+			</if>
+			<if test=" null != c43 ">
+				 `c43` = #{c43},
+			</if>
+			<if test=" null != c44 ">
+				 `c44` = #{c44},
+			</if>
+			<if test=" null != c45 ">
+				 `c45` = #{c45},
+			</if>
+			<if test=" null != c46 ">
+				 `c46` = #{c46},
+			</if>
+			<if test=" null != c47 ">
+				 `c47` = #{c47},
+			</if>
+			<if test=" null != c48 ">
+				 `c48` = #{c48},
+			</if>
+			<if test=" null != c49 ">
+				 `c49` = #{c49},
+			</if>
+			<if test=" null != c50 ">
+				 `c50` = #{c50},
+			</if>
+			id = #{id}
+			WHERE id = #{id}
+	</update>
+
+	<select id="find" resultMap="Excel_RM">
+		SELECT <include refid="Base_Column_List" /> 
+		FROM excel
+		<where>
+			<if test=" null != c01 ">
+				AND `c01` = #{c01}
+			</if>
+			<if test=" null != c02 ">
+				AND `c02` = #{c02}
+			</if>
+			<if test=" null != c03 ">
+				AND `c03` = #{c03}
+			</if>
+			<if test=" null != c04 ">
+				AND `c04` = #{c04}
+			</if>
+			<if test=" null != c05 ">
+				AND `c05` = #{c05}
+			</if>
+			<if test=" null != c06 ">
+				AND `c06` = #{c06}
+			</if>
+			<if test=" null != c07 ">
+				AND `c07` = #{c07}
+			</if>
+			<if test=" null != c08 ">
+				AND `c08` = #{c08}
+			</if>
+			<if test=" null != c09 ">
+				AND `c09` = #{c09}
+			</if>
+			<if test=" null != c10 ">
+				AND `c10` = #{c10}
+			</if>
+			<if test=" null != c11 ">
+				AND `c11` = #{c11}
+			</if>
+			<if test=" null != c12 ">
+				AND `c12` = #{c12}
+			</if>
+			<if test=" null != c13 ">
+				AND `c13` = #{c13}
+			</if>
+			<if test=" null != c14 ">
+				AND `c14` = #{c14}
+			</if>
+			<if test=" null != c15 ">
+				AND `c15` = #{c15}
+			</if>
+			<if test=" null != c16 ">
+				AND `c16` = #{c16}
+			</if>
+			<if test=" null != c17 ">
+				AND `c17` = #{c17}
+			</if>
+			<if test=" null != c18 ">
+				AND `c18` = #{c18}
+			</if>
+			<if test=" null != c19 ">
+				AND `c19` = #{c19}
+			</if>
+			<if test=" null != c20 ">
+				AND `c20` = #{c20}
+			</if>
+			<if test=" null != c21 ">
+				AND `c21` = #{c21}
+			</if>
+			<if test=" null != c22 ">
+				AND `c22` = #{c22}
+			</if>
+			<if test=" null != c23 ">
+				AND `c23` = #{c23}
+			</if>
+			<if test=" null != c24 ">
+				AND `c24` = #{c24}
+			</if>
+			<if test=" null != c25 ">
+				AND `c25` = #{c25}
+			</if>
+			<if test=" null != c26 ">
+				AND `c26` = #{c26}
+			</if>
+			<if test=" null != c27 ">
+				AND `c27` = #{c27}
+			</if>
+			<if test=" null != c28 ">
+				AND `c28` = #{c28}
+			</if>
+			<if test=" null != c29 ">
+				AND `c29` = #{c29}
+			</if>
+			<if test=" null != c30 ">
+				AND `c30` = #{c30}
+			</if>
+			<if test=" null != c31 ">
+				AND `c31` = #{c31}
+			</if>
+			<if test=" null != c32 ">
+				AND `c32` = #{c32}
+			</if>
+			<if test=" null != c33 ">
+				AND `c33` = #{c33}
+			</if>
+			<if test=" null != c34 ">
+				AND `c34` = #{c34}
+			</if>
+			<if test=" null != c35 ">
+				AND `c35` = #{c35}
+			</if>
+			<if test=" null != c36 ">
+				AND `c36` = #{c36}
+			</if>
+			<if test=" null != c37 ">
+				AND `c37` = #{c37}
+			</if>
+			<if test=" null != c38 ">
+				AND `c38` = #{c38}
+			</if>
+			<if test=" null != c39 ">
+				AND `c39` = #{c39}
+			</if>
+			<if test=" null != c40 ">
+				AND `c40` = #{c40}
+			</if>
+			<if test=" null != c41 ">
+				AND `c41` = #{c41}
+			</if>
+			<if test=" null != c42 ">
+				AND `c42` = #{c42}
+			</if>
+			<if test=" null != c43 ">
+				AND `c43` = #{c43}
+			</if>
+			<if test=" null != c44 ">
+				AND `c44` = #{c44}
+			</if>
+			<if test=" null != c45 ">
+				AND `c45` = #{c45}
+			</if>
+			<if test=" null != c46 ">
+				AND `c46` = #{c46}
+			</if>
+			<if test=" null != c47 ">
+				AND `c47` = #{c47}
+			</if>
+			<if test=" null != c48 ">
+				AND `c48` = #{c48}
+			</if>
+			<if test=" null != c49 ">
+				AND `c49` = #{c49}
+			</if>
+			<if test=" null != c50 ">
+				AND `c50` = #{c50}
+			</if>
+		</where>
+		<if test=" null != start and null != limit">
+			LIMIT  #{start},#{limit}
+		</if>
+	</select>
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<!-- changes from the defaults -->
+		<setting name="lazyLoadingEnabled" value="false" />
+	</settings>
+
+	<typeAliases>
+		<!-- bean list -->
+		<typeAlias type="com.idy.domain.Colume" alias="Colume" />
+		<typeAlias type="com.idy.domain.Excel" alias="Excel" />
+		
+		<!-- vo list -->
+		
+	</typeAliases>
+
+</configuration>

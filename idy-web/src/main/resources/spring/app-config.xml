@@ -12,28 +12,12 @@
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
 	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
-	<context:component-scan	base-package="com.doogua.api.dao.book,com.doogua.api.dao.club,com.doogua.api.service.book,com.doogua.api.service.club" >
+	<context:component-scan	base-package="com.idy.dao,com.idy.service" >
 	</context:component-scan>
 	<aop:aspectj-autoproxy expose-proxy="true" />
 	<context:annotation-config />
 
-	<bean
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
-		<property name="ignoreResourceNotFound" value="true" />
-		<property name="locations">
-			<list>
-				<value>classpath:/application.properties</value>
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="properties" class="com.doogua.api.common.constant.Properties" >
-		<property name="printStackTrace" value="${printStackTrace}" />
-		<property name="rightBookList360" value="${rightBookList360}" />
-	</bean>
-
-	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+	<!-- <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<property name="maxTotal" value="8" />
 		<property name="maxIdle" value="4" />
 		<property name="minIdle" value="2" />
@@ -42,12 +26,12 @@
 		<property name="timeBetweenEvictionRunsMillis" value="60000" />
 	</bean>
 
-	<bean id="jedisClient" class="com.doogua.api.common.redis.JedisPool" init-method="init" destroy-method="destroy">
+	<bean id="jedisClient" class="com.idy.redis.JedisPool" init-method="init" destroy-method="destroy">
 		<property name="masters" value="${redis.masters}"/>
 		<property name="config" ref="jedisPoolConfig"/>
 	</bean>
 	
-	<bean id="taduWorker" class="com.doogua.api.worker.TaduWorker" 
+	<bean id="taduWorker" class="com.idy.worker.TaduWorker" 
 		init-method="start" destroy-method="destroy">
 		<property name="runFlag" value="true" /> 
 		<property name="initialDelay" value="0" />
@@ -55,56 +39,7 @@
 		<property name="firstRun" value="false" /> 
 		<property name="TaDu" value="tadu" />
 		<property name="taduCopyrightid" value="${tadu.copyrightid}" />
-		<property name="taduSec" value="${tadu.sec}" />
-		<property name="addBookUrl" value="${tadu.addBookUrl}" />
-		<property name="updateBookUrl" value="${tadu.updateBookUrl}" />
-		<property name="addChapterUrl" value="${tadu.addChapterUrl}" />
-		<property name="updateChapterUrl" value="${tadu.updateChapterUrl}" />
-		<property name="delBookUrl" value="${tadu.delBookUrl}" />
-		<property name="delChapterUrl" value="${tadu.delChapterUrl}" />
-		<property name="delBookFlag" value="false" /> 
-		<property name="delChapterFlag" value="false" /> 
-	</bean>
-	
-	<bean id="wangyiWorker" class="com.doogua.api.worker.WangyiWorker"
-		init-method="start" destroy-method="destroy">
-		<property name="runFlag" value="true" /> 
-		<property name="initialDelay" value="1" />
-		<property name="period" value="10" />
-		<property name="firstRun" value="true" /> 
-		<property name="consumerKey" value="${wy.consumerKey}" /> 
-		<property name="secretKey" value="${wy.secretKey}" /> 
-		<property name="bookListFilePath" value="${wy.bookListFilePath}" /> 
-		<property name="expires" value="0" /> 
-		<property name="categoryUrl" value="${wy.categoryUrl}" /> 
-		<property name="addBookUrl" value="${wy.addBookUrl}" /> 
-		<property name="updateBookUrl" value="${wy.updateBookUrl}" /> 
-		<property name="addVolumeUrl" value="${wy.addVolumeUrl}" /> 
-		<property name="updateVolumeUrl" value="${wy.updateVolumeUrl}" /> 
-		<property name="delVolumeUrl" value="${wy.delVolumeUrl}" /> 
-		<property name="addChapterUrl" value="${wy.addChapterUrl}" /> 
-		<property name="updateChapterUrl" value="${wy.updateChapterUrl}" /> 
-		<property name="delChapterUrl" value="${wy.delChapterUrl}" /> 
-		<property name="getBookListUrl" value="${wy.getBookListUrl}" /> 
-		<property name="getChapSecListUrl" value="${wy.getChapSecListUrl}" /> 
-	</bean>
-	
-	<bean id="dataWorker" class="com.doogua.api.worker.DataWorker" 
-		init-method="start" destroy-method="destroy">
-		<property name="runFlag" value="true" /> 
-		<property name="initialDelay" value="0" />
-		<property name="period" value="5" />
-		<property name="booklistFilePath" value="${booklistFilePath}" />
-		<property name="runBookListFlag" value="false" /> 
-	</bean>
-	
-	<bean id="sujinWorker" class="com.doogua.api.worker.SujinWorker" 
-		init-method="start" destroy-method="destroy">
-		<property name="runFlag" value="true" /> 
-		<property name="initialDelay" value="0" />
-		<property name="period" value="30" />
-		<property name="initFlag" value="true" /> 
-	</bean>
+	</bean> -->
 	
 	<bean class="org.dozer.DozerBeanMapper" />
 </beans>

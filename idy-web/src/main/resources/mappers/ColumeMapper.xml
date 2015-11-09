@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idy.dao.ColumeMapper">
+	<resultMap id="Colume_RM" type="Colume">
+		<id property="id" column="id" />
+		<id property="enName" column="en_name" />
+		<id property="znName" column="zn_name" />
+		<id property="sequence" column="sequence" />
+		<id property="type" column="type" />
+		<id property="status" column="status" />
+		<id property="description" column="description" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,`en_name`,`zn_name`,`sequence`,`type`,`status`,`description`
+	</sql>
+
+	<select id="count" resultType="long">
+		SELECT COUNT(1) FROM colume
+		<where>
+			<if test=" null != enName ">
+				AND `en_name` = #{enName}
+			</if>
+			<if test=" null != znName ">
+				AND `zn_name` = #{znName}
+			</if>
+			<if test=" null != sequence ">
+				AND `sequence` = #{sequence}
+			</if>
+			<if test=" null != type ">
+				AND `type` = #{type}
+			</if>
+			<if test=" null != status ">
+				AND `status` = #{status}
+			</if>
+			<if test=" null != description ">
+				AND `description` = #{description}
+			</if>
+		</where>
+	</select>
+
+	<select id="countAll" resultType="long">
+		SELECT COUNT(1) FROM colume
+	</select>
+
+	<insert id="create" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO colume (<include refid="Base_Column_List" />)
+		VALUES (#{id},#{enName},#{znName},#{sequence},#{type},#{status},#{description})
+	</insert>
+
+	<delete id="del" parameterType="Colume">
+		DELETE FROM colume
+		<where>
+			<if test=" null != enName ">
+				AND `en_name` = #{enName}
+			</if>
+			<if test=" null != znName ">
+				AND `zn_name` = #{znName}
+			</if>
+			<if test=" null != sequence ">
+				AND `sequence` = #{sequence}
+			</if>
+			<if test=" null != type ">
+				AND `type` = #{type}
+			</if>
+			<if test=" null != status ">
+				AND `status` = #{status}
+			</if>
+			<if test=" null != description ">
+				AND `description` = #{description}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM colume WHERE id = #{id}
+	</delete>
+
+	<select id="findById" resultMap="Colume_RM" parameterType="java.lang.Long">
+		SELECT <include refid="Base_Column_List" /> 
+		FROM colume 
+		WHERE id = #{id}
+	</select>
+
+	<update id="update" parameterType="Colume">
+		UPDATE colume
+		SET
+			<if test=" null != enName ">
+				 `en_name` = #{enName},
+			</if>
+			<if test=" null != znName ">
+				 `zn_name` = #{znName},
+			</if>
+			<if test=" null != sequence ">
+				 `sequence` = #{sequence},
+			</if>
+			<if test=" null != type ">
+				 `type` = #{type},
+			</if>
+			<if test=" null != status ">
+				 `status` = #{status},
+			</if>
+			<if test=" null != description ">
+				 `description` = #{description},
+			</if>
+			id = #{id}
+			WHERE id = #{id}
+	</update>
+
+	<select id="find" resultMap="Colume_RM">
+		SELECT <include refid="Base_Column_List" /> 
+		FROM colume
+		<where>
+			<if test=" null != enName ">
+				AND `en_name` = #{enName}
+			</if>
+			<if test=" null != znName ">
+				AND `zn_name` = #{znName}
+			</if>
+			<if test=" null != sequence ">
+				AND `sequence` = #{sequence}
+			</if>
+			<if test=" null != type ">
+				AND `type` = #{type}
+			</if>
+			<if test=" null != status ">
+				AND `status` = #{status}
+			</if>
+			<if test=" null != description ">
+				AND `description` = #{description}
+			</if>
+		</where>
+		<if test=" null != start and null != limit">
+			LIMIT  #{start},#{limit}
+		</if>
+	</select>
+
+</mapper>

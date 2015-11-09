@@ -22,10 +22,10 @@
 	</bean>
 
 	<!-- mvc controller -->
-	<context:component-scan base-package="com.doogua.api.controller.*" />
+	<context:component-scan base-package="com.idy.controller.*" />
 	
 	<!-- interceptor related -->
-	<bean id="_DrmPrivilegeInterceptor" class="com.doogua.api.web.interceptor.DrmPrivilegeInterceptor">
+	<bean id="_DrmPrivilegeInterceptor" class="com.idy.interceptor.DrmPrivilegeInterceptor">
 		<property name="allowUrls">
 			<list>
 				<!-- 如果请求中包含以下路径，则不进行拦截 -->
@@ -39,7 +39,7 @@
 		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="formatterRegistrars">
 			<bean
-				class="com.doogua.api.common.springmvc.converter.DefaultFormatterRegistrar" />
+				class="com.idy.springmvc.converter.DefaultFormatterRegistrar" />
 		</property>
 	</bean>
 
@@ -77,12 +77,12 @@
 	<!-- exception related -->
 	<!-- all exception handler will be registered by DispatcherServlet default 
 		(detectAllHandlerExceptionResolvers=true) -->
-	<bean class="com.doogua.api.common.exception.resolver.LogExceptionResolver">
+	<bean class="com.idy.exception.resolver.LogExceptionResolver">
 		<property name="defaultErrorView" value="error/uncaught" />
 		<property name="exceptionMappings">
 			<props>
-				<prop key="com.doogua.api.common.exception.IllegalHrmPrivilegeException">error/access-denied</prop>
-				<prop key="com.doogua.api.common.exception.SecurityException">error/access-denied</prop>
+				<prop key="com.idy.exception.IllegalHrmPrivilegeException">error/access-denied</prop>
+				<prop key="com.idy.exception.SecurityException">error/access-denied</prop>
 				<prop key="java.lang.Exception">404</prop><!-- error/uncaught -->
 			</props>
 		</property>
