@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *@version V1.0
  */
 @Controller
-@RequestMapping("")
+@RequestMapping("/sheet")
 public class PageController {
 	
 	protected static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(PageController.class);
@@ -40,7 +40,7 @@ public class PageController {
 	 * @return
 	 * @throws IOException 
 	 */
-	@RequestMapping(value = "/booklist.aspx", method = RequestMethod.GET)
+	@RequestMapping(value = "/json.aspx", method = RequestMethod.GET)
 	@ResponseBody
     public void bookList(
             HttpServletRequest request, 

@@ -26,7 +26,7 @@ public class IndexController {
     public String index(
             HttpServletRequest request, HttpServletResponse response,
             Model model) {
-		System.err.println("index.........page");
+		//System.err.println("index.........page");
 		return "index";
     }
 	
@@ -35,7 +35,7 @@ public class IndexController {
     public String defult(
             HttpServletRequest request, HttpServletResponse response,
             Model model) {
-		System.err.println("defult.........page");
+		//System.err.println("defult.........page");
 		return "index";
     }
 	
@@ -43,7 +43,7 @@ public class IndexController {
     public String empty(
             HttpServletRequest request, HttpServletResponse response,
             Model model) {
-		System.err.println("empty.........page");
+		//System.err.println("empty.........page");
 		return "index";
     }
 	
