@@ -134,9 +134,9 @@
 		<property name="defaultErrorView" value="error/uncaught" />
 		<property name="exceptionMappings">
 			<props>
-				<prop key="com.idy.exception.IllegalHrmPrivilegeException">error/access-denied</prop>
-				<prop key="com.idy.exception.SecurityException">error/access-denied</prop>
-				<prop key="java.lang.Exception">404</prop><!-- error/uncaught -->
+				<prop key="com.idy.exception.IllegalHrmPrivilegeException">/error/access-illegal</prop>
+				<prop key="com.idy.exception.SecurityException">/error/access-denied</prop>
+				<prop key="java.lang.Exception">/404</prop><!-- error/uncaught -->
 			</props>
 		</property>
 	</bean>

@@ -3,10 +3,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<base href="$request.getScheme()://$request.getServerName():$request.getServerPort()$request.getContextPath()/">
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+		<title>#if($!title)$!title#else花名册管理 #end</title>
 	</head>
 	<body>
-		<h1>大美女，页面不存在哦， <a href="/index" style="color:red">返回</a></h1>
+		<h1>大美女，页面不存在哦， <a href="roster/serving" style="color:red">返回</a></h1>
 	</body>
 </html>

@@ -32,7 +32,8 @@
   </error-page>
   <error-page>
     <error-code>500</error-code>
-    <location>/404.vm</location>
+    <!-- 此处对应的是controller中的url的，并非页面 -->
+    <location>/404</location>
   </error-page>
   <filter>
     <filter-name>CompressingFilter</filter-name>
