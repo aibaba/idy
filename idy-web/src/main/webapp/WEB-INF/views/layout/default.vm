@@ -1,6 +1,19 @@
 <!--头部模板-->
 #parse("layout/header.vm")
 <!--主体页面-->
-<div class="main">$screen_content</div>
+<div id="main_container" data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;">
+	<!--set by velocity-->
+	<div class="breadcrumb_container" style="display:none">
+		<div class="breadcrumb">
+			#foreach( $crumbItem in $breadcrumb )
+			    #if( $foreach.count > 1 )
+			        &nbsp;&gt;&nbsp;
+			    #end
+			    <a href="#springUrl('')$crumbItem[1]">$crumbItem[0]</a> 
+			#end
+		</div>
+	</div>
+	$screen_content
+</div>  
 <!--底部模板-->
 #parse("layout/footer.vm")

@@ -1,8 +1,8 @@
 #set( $layout = "./layout/empty.vm" )
 
-		<div class="footer">
-			<p>技术支持：杜佳    电话：010 - 5201314      手机：13966666666     Email: superpeng2000@163.com</p>
-			<p>dangdang.com</p>
+		    <div id="footer_container" data-options="region:'south',split:true" style="height:30px;">
+		    	<div style="margin-top: 5px;margin-left:5px;font-weight:bold">Copyright © 2015 www.idy.com</div>
+		    </div>
 		</div>
 	</body>
 </html>

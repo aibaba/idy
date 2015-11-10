@@ -65,9 +65,9 @@ $(function(){
 					return '<a style="color:blue;" onclick="update(' + row.id + ');">修改</a>|<a style="color:red;" onclick="del(' + row.id + ');">删除</a>';
 				}
 			}
-		]],
-		onLoadError:function(){
-			$.messager.alert('Error','获取列表失败!请重试。','error');
+		]]
+		,onLoadError:function(){
+			//$.messager.alert('Error','系统出现了问题哦，赶快联系老公吧 嘿嘿','error');
 		}
 	});
 	

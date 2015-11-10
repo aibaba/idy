@@ -2,34 +2,54 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<base href="$request.getScheme()://$request.getServerName():$request.getServerPort()$request.getContextPath()/">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-<title>#if($!title)$!title#else自助CRM系统 #end</title>
-<link rel="stylesheet" type="text/css" href="css/login.css" />
-<link rel="stylesheet" type="text/css" href="css/index.css" />
-
-<link href="css/euithemes/default/easyui.css" rel="stylesheet" type="text/css" />
-<link href="css/euithemes/icon.css" rel="stylesheet" type="text/css" />
-<link href="css/common.css" rel="stylesheet" type="text/css" />
-<link href="css/table.css" rel="stylesheet" type="text/css" />
-
-<script type="text/javascript" src="js/json2.js"></script>
-<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="js/jquery.cookie.js"></script>
-<script type="text/javascript" src="js/jquery.jsPlumb-1.3.16-all-min.js"></script>
-<script type="text/javascript" src="js/jquery.easyui.min-1.3.3.js"></script>
-<script type="text/javascript" src="js/locale/easyui-lang-zh_CN.js"></script>
-<script type="text/javascript" src="js/date.js"></script>
-<script type="text/javascript" src="js/common.js"></script>
-</head>
-
-<body>
-		<div class="header clear">
-			<h1 class="leftF"><a href=""><img src="images/logo_bg.png" alt="IDY"/></a></h1>
-		</div>
-		<div class="nav">
-			<h2>
-			</h2>
-		</div>	
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<base href="$request.getScheme()://$request.getServerName():$request.getServerPort()$request.getContextPath()/">
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+		<title>#if($!title)$!title#else花名册管理 #end</title>
+		<link href="css/euithemes/default/easyui.css?_=$desploy_timestamp" rel="stylesheet" type="text/css" />
+		<link href="css/euithemes/icon.css?_=$desploy_timestamp" rel="stylesheet" type="text/css" />
+		<link href="css/common.css?_=$desploy_timestamp" rel="stylesheet" type="text/css" />
+		<link href="css/table.css?_=$desploy_timestamp" rel="stylesheet" type="text/css" />
+		
+		<script type="text/javascript" src="js/json2.js"></script>
+		<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="js/jquery.jsPlumb-1.3.16-all-min.js"></script>
+		<script type="text/javascript" src="js/jquery.easyui.min-1.3.3.js"></script>
+		<script type="text/javascript" src="js/locale/easyui-lang-zh_CN.js"></script>
+		<script type="text/javascript" src="js/date.js"></script>
+		<script type="text/javascript" src="js/highcharts.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		<script type="text/javascript" src="js/jqueryExtension.js"></script>
+		<script type="text/javascript">
+			var baseUrl = "#springUrl('')";
+			$.cookie.raw = true;
+			$(function(){
+				$rdm.init(baseUrl);
+			});
+		</script>
+	</head>
+	
+	<body>
+		<!--头部-->
+		<div id="layout" class="easyui-layout" data-options="fit:true"> 
+		    <div id="header_container" data-options="region:'north',split:true" style="height:80px;">
+		    	<div style="float:left">
+		    		<h2 style="font-size: 24px; font-weight: bold; color: white; margin-top: 20px; margin-left: 5px;">花名册管理台</h2>
+		    	</div>
+		    	<div style="float:left">
+		    		<h2 style="font-size: 12px; font-weight: bold; color: white; margin-top: 15px; margin-left: 30px;">北京天气：</h2>
+		    	<!--<iframe src="http://m.weather.com.cn/data/101010100.html" frameborder="0" scrolling="no" style=" position:absolute; top:1px; left:150px;" ></iframe>-->
+		    	</div>
+		    	<div style="float:center">
+		    		<h2 style="font-size: 12px; font-weight: bold; color: white; margin-top: 15px; margin-left: 30px;">北京时间：</h2>
+		    	</div>
+		    	<div style="float:right">
+		    		<h1 style="font-size: 12px; font-weight: bold; color: white; margin-top: -5px; margin-right: 35px;">欢迎<a style="color: red;">董大美女</a>使用花名册管理台</h1>
+		    	</div>  
+		    </div>
+		    <div id="nav_container" data-options="region:'west',title:'页面导航',split:true" style="width:150px;">
+		    	<ul id="nav_tree" style = "margin-top: 10px;"></ul>
+		    </div>  
+		    

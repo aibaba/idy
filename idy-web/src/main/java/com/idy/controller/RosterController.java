@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *@version V1.0
  */
 @Controller
-@RequestMapping("/sheet")
-public class PageController {
+@RequestMapping("/roster")
+public class RosterController {
 	
-	protected static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(PageController.class);
+	protected static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(RosterController.class);
 	
 	@RequestMapping(value = "/{num}")
     public String mapping(
@@ -30,6 +30,14 @@ public class PageController {
 		model.addAttribute("num", num);
 		
 		return "excel/sheet" + num;
+    }
+	
+	@RequestMapping(value = "/serving")
+    public String serving(
+            HttpServletRequest request, HttpServletResponse response,
+            Model model) {
+		
+		return "roster/serving";
     }
 	
 	/**
