@@ -39,12 +39,18 @@ public class IndexController {
 		return "index";
     }
 	
-	@RequestMapping(value = "")
-    public String empty(
+	@RequestMapping(value = "/404")
+    public String page404(
             HttpServletRequest request, HttpServletResponse response,
             Model model) {
-		//System.err.println("empty.........page");
-		return "index";
+		return "404";
+    }
+	
+	@RequestMapping(value = "/404.vm")
+    public String pageVm404(
+            HttpServletRequest request, HttpServletResponse response,
+            Model model) {
+		return "404";
     }
 	
 	@RequestMapping(value = "/error/access-denied")

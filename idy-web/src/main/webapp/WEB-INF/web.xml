@@ -30,6 +30,10 @@
     <error-code>404</error-code>
     <location>/404.vm</location>
   </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/404.vm</location>
+  </error-page>
   <filter>
     <filter-name>CompressingFilter</filter-name>
     <filter-class>com.planetj.servlet.filter.compression.CompressingFilter</filter-class>
