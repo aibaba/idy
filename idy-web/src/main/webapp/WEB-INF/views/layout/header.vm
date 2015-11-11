@@ -42,9 +42,9 @@
 		    		<h2 style="font-size: 12px; font-weight: bold; color: white; margin-top: 15px; margin-left: 30px;">北京天气：</h2>
 		    	<!--<iframe src="http://m.weather.com.cn/data/101010100.html" frameborder="0" scrolling="no" style=" position:absolute; top:1px; left:150px;" ></iframe>-->
 		    	</div>
-		    	<div style="float:center">
+		    	<!--<div style="float:center">
 		    		<h2 style="font-size: 12px; font-weight: bold; color: white; margin-top: 15px; margin-left: 30px;">北京时间：</h2>
-		    	</div>
+		    	</div>-->
 		    	<div style="float:right">
 		    		<h1 style="font-size: 12px; font-weight: bold; color: white; margin-top: -5px; margin-right: 35px;">欢迎<a style="color: red;">董大美女</a>使用花名册管理台</h1>
 		    	</div>  

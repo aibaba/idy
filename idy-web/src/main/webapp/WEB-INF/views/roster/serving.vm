@@ -1,146 +1,208 @@
-<div class="main">
-		<div class="breadcrumbs">
-			<a href="/index">首页</a><span class="space">></span><a href="user/list">账号管理</a>
+<div id="serving_query_form" style="padding: 10px 15px 10px;background-color:white;margin-bottom: 10px; border: 1px solid #95b8e7">
+	<div>
+		<div style="margin-bottom: 5px;display:inline-block;">
+			<label style="font-size:14px;color:#333" for="realName">工号 ：</label>
+			<input id="realName"  name="realName" placeholder="请输入工号"  title="支持模糊查询" type="text"  value=""/>
 		</div>
-		<div class="box creat-user">
-			<div class="box-title">
-				账号管理  &nbsp;&nbsp;&nbsp;<button type="button" id="createBtn" style="height: 25px;width: 60px;">创建</button>
-			</div>
-		</div>	
-		
-		<div class="box creat-user">
-			<div class="box-title">
-               	关键字:&nbsp;<input style="width: 200px;" type="text" id="keyword" name="keyword" value="$!{keyword}" placeholder="请输入用户名称..." maxlength="20" />
-                &nbsp;<button type="button" id="queryBtn" style="height: 25px;width: 60px;">搜索</button>
-                &nbsp;<button type="button" id="clearBtn" style="height: 25px;width: 60px;">清空</button>
-            </div>
-        </div>
-        
+		<div style="margin-bottom: 5px;display:inline-block;">
+			<label style="font-size:14px;color:#333" for="userName">姓名 ：</label>
+			<input id="userName" name="userName" placeholder="请输入姓名" title="支持模糊查询" type="text"  value=""/>
+		</div>
+	</div>
+		<a id ="queryBtn" type="button" class="easyui-linkbutton">查询</a>
+    	<a id="resetBtn" class="easyui-linkbutton" style="margin-left: 1px;">重置</a>
+    	<a id ="importBtn" type="button" class="easyui-linkbutton" style="margin-left: 1px;">导入</a> 
+		<a id ="saveBtn" type="button" class="easyui-linkbutton" style="margin-left: 1px;"><h style="color:red">保存</h></a>
+    	<div id="importDiv" style="margin-bottom: 5px;display:inline-block;">
+	    	<form id="excelForm" method="post" enctype="multipart/form-data" >
+	    		<input type="file" id="excelFile" name="excelFile"  />
+	    	</form>
+		 </div>
 </div>
 
-<div id="user_datagrid"></div>
+<div id="serving_container" style="padding: 5px;">
+	<div id="serving_container"></div>
+</div>
 
 <script type="text/javascript">  
 #[[
+
+$(document).ready(function() { 
+	$('#importDiv').hide();
+	$('#saveBtn').hide();
+	$('#realName').val('');
+	$("#userName").val('');
+});
+
 $(function(){
 
+	$("#resetBtn").click(reset);
+	$("#importBtn").click(preImport);
 	$("#queryBtn").click(loadData);
-	$("#clearBtn").click(clearQuery);
-	$("#createBtn").click(createuser);
-	
-	$('#user_datagrid').datagrid({
-		width:"99%",
+
+	$('#serving_container').datagrid({
+		width:'99%',  
 		nowrap: false,
-		pagination:true,
-		pageSize: 20,//每页显示的记录条数，默认为10 
-        pageList: [10,20,30,40,50],//可以设置每页记录条数的列表
 		method: 'post',
 		striped: true,
 		collapsible:true,
-		url:'user/query.json',
-		remoteSort: false,
-		idField:'id',
+		url:'serving/list.json',
 		queryParams:packageData(),
-		rownumbers:false,
+		rownumbers:true,
+		singleSelect:true,
+		remoteSort: false,
+		pagination:true,
+		pageSize: 20,//每页显示的记录条数，默认为10 
+        pageList: [10,20,30,40,50],
+		idField:'id',
+		toolbar:[{
+		 			id:'add',
+		 			text:'新增',
+		 			iconCls:'icon-add',
+		 			handler:function(){
+			    		window.location.href = $rdm.baseUrl() + "/serving/add";
+			    	}
+		 		},
+		 		{
+		 			id:'update',
+		 			text:'修改',
+		 			iconCls:'icon-edit',
+		 			handler:function(){
+			    		window.location.href = $rdm.baseUrl() + "/serving/add";
+			    	}
+		 		},
+		 		{
+		 			id:'del',
+		 			text:'删除',
+		 			iconCls:'icon-remove',
+		 			handler:function(){
+			    		window.location.href = $rdm.baseUrl() + "/serving/add";
+			    	}
+		 		}
+		 		,{
+		 			id:'export',
+		 			text:'导出',
+		 			iconCls:'icon-redo',
+		 			handler:function(){
+			    		window.location.href = $rdm.baseUrl() + "/serving/add";
+			    	}
+		 		}
+		 ],
 		columns:[[
-			{field:'id',title:'用户ID',width:70,align:'center'},
-			{field:'userName',title:'用户名',width:90,align:'center'},
-			{field:'zhName',title:'中文名称',width:90,align:'center'},
-			//{field:'zhSpell',title:'中文拼音',width:90,align:'center'},
-			{field:'email',title:'邮箱',width:160,align:'center'},
-		 	{field:'depart',title:'部门',width:80,align:'center'},
-		 	{field:'position',title:'职位',width:80,align:'center'},
-		 	{field:'team',title:'团队',width:80,align:'center'},
-		 	{field:'identity',title:'身份',width:80,align:'center'},
-		 	{field:'roles',title:'角色',width:90,align:'center'},
-			{field:'status',title:'状态',width:60,align:'center',
-				formatter:function(r){
-		 				return statusValue[r];
-		 			},styler:function(r){
-		 				return statusStyler[r];
-		 			}
-		 	},
-			{field:'opt',title:'操作',width:100,align:'center',
+			{field:'id',title:'ID',width:fixWidth(0.1),align:'center', hidden:'true'},
+			{field:'realName',title:'第三方名称',width:fixWidth(0.1),align:'center'},
+			{field:'userName',title:'第三方账号',width:fixWidth(0.1),align:'center'},
+			{field:'totalBooks',title:'图书总数',width:fixWidth(0.06),align:'center'},
+			{field:'totalSub',title:'总订阅数',width:fixWidth(0.06),align:'center'},
+			{field:'totalIncome',title:'总收益(豆瓜币)',width:fixWidth(0.08),align:'center'},
+			{field:'opt',title:'操作',width:fixWidth(0.12),align:'center',
 				formatter:function(value, row, index){
-					return '<a style="color:blue;" onclick="update(' + row.id + ');">修改</a>|<a style="color:red;" onclick="del(' + row.id + ');">删除</a>';
-				}
-			}
+					return '<a title="修改账号" style="text-decoration: underline; color:blue;" href="http://doogua.dangdang.com/bms/serving/update/' + row.id +'/">修改</a> | <a title="关联相关作品" style="text-decoration: underline; color:blue;" href="http://doogua.dangdang.com/bms/serving/relaBooks/' + row.id +'/">关联作品</a>';
+	 			}
+			},
+		 	{field:'intro',title:'简介',width:fixWidth(0.20),align:'center'},
+			{field:'status',title:'状态',width:fixWidth(0.05),align:'center',
+				formatter:function(value, row, index){
+					if(row.status == 1){
+		 				return '<a style="color:green" >正常</a>'
+					}
+					return '<a style="color:red" >已封禁</a>'
+	 			}
+		 	},
+		 	{field:'opt2',title:'封禁',width:fixWidth(0.05),align:'center',
+				formatter:function(value, row, index){
+					if(row.status == 1){
+		 				return '<a id ="statusA" href="javascript:status(' + row.id +',' + index + ',0);" title="点击修改为封禁" >封禁</a>'
+					}
+					return '<a id ="statusA" style="color:red" href="javascript:status(' + row.id +',' + index + ',1);" title="点击修改为正常" >解封</a>'
+	 			}
+		 	}
 		]]
 		,onLoadError:function(){
-			//$.messager.alert('Error','系统出现了问题哦，赶快联系老公吧 嘿嘿','error');
+			//$.messager.alert('Error','获取列表失败!请重试。','error');
 		}
 	});
 	
-	//设置分页控件 
-    var p = $('#user_datagrid').datagrid('getPager'); 
-    $(p).pagination({ 
-        pageSize: 20,//每页显示的记录条数，默认为10 
-        pageList: [10,20,30,40,50],//可以设置每页记录条数的列表 
-        beforePageText: '第',//页数文本框前显示的汉字 
-        afterPageText: '页    共 {pages} 页', 
-        displayMsg: '显示{from}到{to},共{total}记录' 
-    }); 
-	
-	var statusValue={
-		"0":"正常","1":"待激活","2":"废弃"
-		}
-	var statusStyler={
-		"0":"color:green","1":"color:grey", "2":"color:red"
+	var values={
+		"0":"正常","1":"封禁","null":"未知"
 	}
+	
+	var styler={
+		"0":"color:green","1":"color:red","null":"color:grey"
+	}
+	
 });
+
+function loadData(){
+	$('#serving_container').datagrid("load",packageData());
+}
+
+function preImport(){
+	$('#importBtn').hide();
+	$('#saveBtn').show();
+	$('#excelFile').click();
+}
+
 
 function packageData(){
 	var data = {};
-	if($("#keyword").val() != '') {
-		data.userName = $("#keyword").val();
+	if($("#userName").val() != '') {
+		data.userName = $("#userName").val();
+	}
+	if($("#realName").val() != '') {
+		data.realName = $("#realName").val();
 	}
 	
 	return data;
 }
 
-function loadData(){
-	$('#user_datagrid').datagrid("load",packageData());
+function status(id,index,status){
+	var row = $('#serving_container').datagrid('getData').rows[index];
+	var action ;
+	if(status == 0){
+		action = '封禁';
+	}else {
+		action = '恢复';
+	}
+	$.messager.confirm('提示信息', '确认要' + action + row.realName +'么?',function(r){   
+		if (r){
+			$.ajax({
+				type : "POST",
+				url : "http://doogua.dangdang.com/bms/serving/doUpdate",
+				data:{id:id,status:status},
+				success : function(msg) {
+					if(msg == 1){
+						alert(action + "成功!!");
+						$('#serving_container').datagrid("load",{});
+						$('#serving_container').datagrid("unselectAll");
+					}else if(msg == 2){
+						alert("没有变化的字段，请确认修改内容！");
+					}else if(msg == 3){
+						alert("输入非法！");
+					}else {
+						alert("修改失败！");
+					}
+				}
+			});
+		}else{
+			return;
+		}   
+	});  
 }
 
-function createuser(){
-	window.location.href="http://doogua.dangdang.com/auth/user/account";
-}
-
-function keyDown_handler(e){
+document.onkeydown = function(e){
+	var event = e || window.event;  
+    var code = event.keyCode || event.which || event.charCode;
 	if(e.keyCode==13){
 		loadData();
 	}
 }
 
-function clearQuery() {
-	$(":text,#keyword").val("");
-	loadData();
-}
-
-function update(id){
-	window.location.href="http://doogua.dangdang.com/auth/user/"+id+"/update";
-}
-
-function del(id){
-	var r=confirm("是否确定删除？");
- 	if (r==true) {  
-		$.ajax({
-			type : "POST",
-			url : "user/del",
-			data:{"ids":id},
-			success : function(json) {
-				if(json==0){
-					 alert("删除失败");
-				}else{
-					$('#user_datagrid').datagrid("reload");
-				}
-			},
-		   error:function(r){
-			 console.info("网络异常！");
-		   }
-		});
-	};
+function reset(){
+	$('#userName').val('');
+	$('#realName').val('');
+	window.location.reload();
 }
 ]]#
 
-</script>
+</script>  
