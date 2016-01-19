@@ -12,6 +12,13 @@ import com.alibaba.fastjson.annotation.JSONField;
  *
  */
 public class BaseDomain {
+	
+	/**
+	 * mysql分页参数start
+	 */
+	@Setter
+	@JSONField(serialize = false)
+	private Integer Test;
 
 	/**
 	 * mysql分页参数start
