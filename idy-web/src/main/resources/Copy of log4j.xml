@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%t] [%7r] %6p - %30.30c - %m%n" />
+            <param name="ConversionPattern" value="%d [%t] [%7r] %6p - %30.30c - %m%n" />
+        </layout>
+    </appender>
+    <appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${_log.path}/idy.log" />
+        <param name="datePattern" value="'.'yyyy-MM-dd" />
+        <param name="encoding" value="UTF-8" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                value="%d [%t] [%7r] %6p - %30.30c - %m%n" />
+        </layout>
+    </appender>
+    <category name="com.idy" additivity="false">
+        <priority value="${_log.idy.level}" />
+        <appender-ref ref="${_log.idy.appender}" />
+    </category>
+    <root>
+        <priority value="${_log.root.level}" />
+        <appender-ref ref="${_log.root.appender}" />
+    </root>
+</log4j:configuration>
