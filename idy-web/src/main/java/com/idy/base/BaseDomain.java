@@ -18,13 +18,13 @@ public class BaseDomain {
 	 */
 	@Setter
 	@JSONField(serialize = false)
-	private Long start;
+	private Integer start;
 	
 	/**
 	 * mysql分页参数limit
 	 */
 	@Setter
-	@JSONField(serialize = false)
+	@JSONField(serialize = true)
 	private Integer limit;
 	
 	/**
@@ -33,7 +33,7 @@ public class BaseDomain {
 	@Getter
 	@Setter
 	@JSONField(serialize = false)
-	private Long startPage;
+	private Integer startPage;
 	
 	/**
 	 * 页容量
@@ -43,7 +43,7 @@ public class BaseDomain {
 	@JSONField(serialize = false)
 	private Integer pageSize;
 
-	public Long getStart() {
+	public Integer getStart() {
 		if(startPage == null || pageSize == null) {
 			return start;
 		}
