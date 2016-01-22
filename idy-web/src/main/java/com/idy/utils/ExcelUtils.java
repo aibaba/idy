@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -13,6 +14,8 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.idy.constant.SystemConfig;
 
 public class ExcelUtils {
 
@@ -35,13 +38,12 @@ public class ExcelUtils {
 					 continue;
 				 }
 				 //sheet的每行
-				 for (int rowNum = 1; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
+				 int lastRow = hssfSheet.getLastRowNum();
+				 for (int rowNum = 0; rowNum <= lastRow; rowNum++) {
 					 HSSFRow hssfRow = hssfSheet.getRow(rowNum);
 					 if (hssfRow != null) {
-						 HSSFCell c = hssfRow.getCell(0);
-						 int last = hssfRow.getLastCellNum();
-						 for(int k = 0 ; k<last ; k++){
-							 System.out.println(getValue(c));
+						 for(int k = 0 ; k<hssfRow.getLastCellNum() ; k++){
+							 System.out.print(getValue(hssfRow.getCell(k))+ "$");
 						 }
 					 }
 				 }
@@ -110,12 +112,26 @@ public class ExcelUtils {
 	}
 	
 	private static String getValue(HSSFCell hssfCell) {
-		if (hssfCell.getCellType() == hssfCell.CELL_TYPE_BOOLEAN) {
-		   return String.valueOf(hssfCell.getBooleanCellValue());
-		} else if (hssfCell.getCellType() == hssfCell.CELL_TYPE_NUMERIC) {
-			return String.valueOf(hssfCell.getNumericCellValue());
-		} else {
-			return String.valueOf(hssfCell.getStringCellValue());
-		   }
+		if(hssfCell == null) {
+			return "";
 		}
+		switch(hssfCell.getCellType()){
+			case XSSFCell.CELL_TYPE_STRING:
+				return hssfCell.getStringCellValue();
+			case XSSFCell.CELL_TYPE_NUMERIC:
+				if ("@".equals(hssfCell.getCellStyle().getDataFormatString())) {
+					return SystemConfig.YMS_FORMATE.format(hssfCell.getNumericCellValue());
+				} else if ("General".equals(hssfCell.getCellStyle().getDataFormatString())) {
+					return SystemConfig.DF_INT.format(hssfCell.getNumericCellValue());
+				} else {
+					return SystemConfig.YMD_FORMATE.format(HSSFDateUtil.getJavaDate(hssfCell.getNumericCellValue()));
+				}
+			case XSSFCell.CELL_TYPE_BOOLEAN:
+				return "" + hssfCell.getBooleanCellValue();
+			case XSSFCell.CELL_TYPE_BLANK:
+				return "";
+			default:
+				return hssfCell.toString();
+		}
+	}
 }
