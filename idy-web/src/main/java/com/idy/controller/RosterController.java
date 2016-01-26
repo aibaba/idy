@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.idy.base.BaseController;
 import com.idy.base.EUIDataGridPage;
 import com.idy.domain.Excel;
 import com.idy.service.ExcelService;
@@ -29,7 +30,7 @@ import com.idy.utils.ExcelUtils;
  */
 @Controller
 @RequestMapping("/roster")
-public class RosterController {
+public class RosterController extends BaseController {
 	
 	protected static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(RosterController.class);
 	
@@ -50,7 +51,7 @@ public class RosterController {
     public String serving(
             HttpServletRequest request, HttpServletResponse response,
             Model model) {
-		
+		initBasicInfo(request, model, "花名册", "/roster/serving", "在职员工", "/roster/serving");
 		return "roster/serving";
     }
 	

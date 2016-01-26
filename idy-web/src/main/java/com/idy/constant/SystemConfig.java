@@ -28,4 +28,6 @@ public class SystemConfig {
 	public static final DecimalFormat DF_INT = new DecimalFormat("0");// 格式化数字
 
 	public static final DecimalFormat DF_DECUMAL = new DecimalFormat("0.0");// 格式化数字
+	
+	public static final String COOKIE_USER_NAME = "idy_user";
 }
