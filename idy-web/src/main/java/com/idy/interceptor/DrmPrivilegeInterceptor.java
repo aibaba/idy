@@ -11,7 +11,9 @@ import lombok.Setter;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.idy.domain.Weather;
 import com.idy.exception.resolver.StackTrace;
+import com.idy.utils.HttpUtil;
 import com.idy.utils.IPUtil;
 
 /**
@@ -41,10 +43,22 @@ public class DrmPrivilegeInterceptor extends HandlerInterceptorAdapter {
 		return true;
 	}
 	
+	int i=0;
 	@Override
 	public void postHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
+		if(modelAndView != null) {
+			try {
+				logger.info("i=" + ++i + ",modelAndView=" + modelAndView.getViewName());
+				Weather weather = HttpUtil.doGet("http://www.weather.com.cn/data/cityinfo/101010100.html", Weather.class);
+				if(weather != null) {
+					modelAndView.addObject("weather", weather.getWeatherInfo());
+				}
+			} catch (Exception e) {
+				logger.error("查询天气时异常。" , e);
+			}
+		}
 	}
 
 	@Override
