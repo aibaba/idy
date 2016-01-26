@@ -13,6 +13,7 @@
     	<a id="resetBtn" class="easyui-linkbutton" style="margin-left: 1px;">重置</a>
     	<a id ="importBtn" type="button" class="easyui-linkbutton" style="margin-left: 1px;">导入</a> 
 		<a id ="saveBtn" type="button" class="easyui-linkbutton" style="margin-left: 1px;"><h style="color:red">保存</h></a>
+		<a id ="cancelBtn" type="button" class="easyui-linkbutton" style="margin-left: 1px;"><h style="color:red">取消</h></a>
     	<div id="importDiv" style="margin-bottom: 5px;display:inline-block;">
 	    	<form id="excelForm" method="post" enctype="multipart/form-data" >
 	    		<input type="file" id="excelFile" name="excelFile"  />
@@ -30,6 +31,7 @@
 $(document).ready(function() { 
 	$('#importDiv').hide();
 	$('#saveBtn').hide();
+	$('#cancelBtn').hide();
 	$('#realName').val('');
 	$("#userName").val('');
 });
@@ -39,22 +41,63 @@ $(function(){
 	$("#resetBtn").click(reset);
 	$("#importBtn").click(preImport);
 	$("#queryBtn").click(loadData);
+	$('#cancelBtn').click(cancel);
+	
+	$("#saveBtn").click(function() {
+		$('#excelForm').form({  
+		    url: "roster/serving/import.json?sheetId=1",
+		    onSubmit: function() {
+		    	var rt = true;
+		    	return rt;
+		    },  
+		    success: function(data) {
+				if(data == 0){
+					alert("导入了失败啦！检查下格式，内容重试下，或者联系某帅哥！");
+				}else{
+					alert("保存成功！");
+					window.location.reload();
+				}
+		    }  
+		});
+		$('#excelForm').submit();
+	});
+	
+    var serView = $.extend({}, $.fn.datagrid.defaults.view, {  
+		onAfterRender: function(target){
+			$.fn.datagrid.defaults.view.onAfterRender.call(this, target);
+			var rows = $(target).datagrid('getRows');
+			var data = $(target).datagrid('getData');
+			$(target).datagrid('getPanel').find('td[fidld!=actions]').each(function(){
+				var tmp = $(this).find('div');
+				$(this).attr('title',$(tmp).text());
+			});
+			$(target).datagrid('getPanel').find('tr[datagrid-row-index]').each(function(){
+				var index = $(this).attr('datagrid-row-index');
+				var id = rows[index]['id'];
+				var name = rows[index]['title'];
+				var actionsContainer = $(this).find('div.datagrid-cell-c1-actions');
+			});
+		}
+	});
 
 	$('#serving_container').datagrid({
+		view: serView,
 		width:'99%',  
 		nowrap: false,
 		method: 'post',
-		striped: true,
+		striped: true,//偶行使用不同背景色
 		collapsible:true,
-		url:'serving/list.json',
+		//fit:true,//自动补全  
+        fitColumns:false,
+		url:'roster/serving/list.json?sheetId=1',
 		queryParams:packageData(),
-		rownumbers:true,
+		rownumbers:false,
 		singleSelect:true,
 		remoteSort: false,
 		pagination:true,
-		pageSize: 20,//每页显示的记录条数，默认为10 
-        pageList: [10,20,30,40,50],
-		idField:'id',
+		pageSize: 10,//每页显示的记录条数 
+        pageList: [5,10,15,20,50],
+		//idField:'c01',
 		toolbar:[{
 		 			id:'add',
 		 			text:'新增',
@@ -87,36 +130,66 @@ $(function(){
 			    		window.location.href = $rdm.baseUrl() + "/serving/add";
 			    	}
 		 		}
+		 		,{
+		 			id:'exportAll',
+		 			text:'导出全部',
+		 			iconCls:'icon-redo',
+		 			handler:function(){
+			    		window.location.href = $rdm.baseUrl() + "/serving/add";
+			    	}
+		 		}
 		 ],
+		frozenColumns:[[    
+			{field:'c01',title:'序号',width:45,align:'center'},
+			{field:'c02',title:'工号',width:75,align:'center'},
+			{field:'c03',title:'姓名',width:75,align:'center'},
+			{field:'c04',title:'证件号码',width:150,align:'center'},
+			{field:'c05',title:'代称',width:85,align:'center'},
+			{field:'c06',title:'入职日期',width:90,align:'center'},
+			{field:'c07',title:'所属机构',width:90,align:'center'},
+    	]],
 		columns:[[
-			{field:'id',title:'ID',width:fixWidth(0.1),align:'center', hidden:'true'},
-			{field:'realName',title:'第三方名称',width:fixWidth(0.1),align:'center'},
-			{field:'userName',title:'第三方账号',width:fixWidth(0.1),align:'center'},
-			{field:'totalBooks',title:'图书总数',width:fixWidth(0.06),align:'center'},
-			{field:'totalSub',title:'总订阅数',width:fixWidth(0.06),align:'center'},
-			{field:'totalIncome',title:'总收益(豆瓜币)',width:fixWidth(0.08),align:'center'},
-			{field:'opt',title:'操作',width:fixWidth(0.12),align:'center',
-				formatter:function(value, row, index){
-					return '<a title="修改账号" style="text-decoration: underline; color:blue;" href="http://doogua.dangdang.com/bms/serving/update/' + row.id +'/">修改</a> | <a title="关联相关作品" style="text-decoration: underline; color:blue;" href="http://doogua.dangdang.com/bms/serving/relaBooks/' + row.id +'/">关联作品</a>';
-	 			}
-			},
-		 	{field:'intro',title:'简介',width:fixWidth(0.20),align:'center'},
-			{field:'status',title:'状态',width:fixWidth(0.05),align:'center',
-				formatter:function(value, row, index){
-					if(row.status == 1){
-		 				return '<a style="color:green" >正常</a>'
-					}
-					return '<a style="color:red" >已封禁</a>'
-	 			}
-		 	},
-		 	{field:'opt2',title:'封禁',width:fixWidth(0.05),align:'center',
-				formatter:function(value, row, index){
-					if(row.status == 1){
-		 				return '<a id ="statusA" href="javascript:status(' + row.id +',' + index + ',0);" title="点击修改为封禁" >封禁</a>'
-					}
-					return '<a id ="statusA" style="color:red" href="javascript:status(' + row.id +',' + index + ',1);" title="点击修改为正常" >解封</a>'
-	 			}
-		 	}
+			{field:'c08',title:'业务单元',width:90,align:'center'},
+			{field:'c09',title:'一级部门/分公司',width:100,align:'center'},
+			{field:'c10',title:'办事处',width:60,align:'center'},
+			{field:'c11',title:'工作地点',width:90,align:'center'},
+			{field:'c12',title:'二级部门',width:90,align:'center'},
+			{field:'c13',title:'三级部门',width:90,align:'center'},
+			{field:'c14',title:'职位名称',width:110,align:'center'},
+			{field:'c15',title:'岗位类型',width:90,align:'center'},
+			{field:'c16',title:'职级',width:60,align:'center'},
+			{field:'c17',title:'司龄',width:60,align:'center'},
+			{field:'c18',title:'员工状态',width:80,align:'center'},
+			{field:'c19',title:'直接主管',width:80,align:'center'},
+			{field:'c20',title:'指导人',width:80,align:'center'},
+			{field:'c21',title:'通过关注日期',width:100,align:'center'},
+			{field:'c22',title:'试用期',width:100,align:'center'},
+			{field:'c23',title:'转正日期',width:100,align:'center'},
+			{field:'c24',title:'毕业学校',width:150,align:'center'},
+			{field:'c25',title:'专业',width:150,align:'center'},
+			{field:'c26',title:'学历',width:80,align:'center'},
+			{field:'c27',title:'政治面貌',width:70,align:'center'},
+			{field:'c28',title:'性别',width:70,align:'center'},
+			{field:'c29',title:'出生日期',width:110,align:'center'},
+			{field:'c30',title:'年龄',width:70,align:'center'},
+			{field:'c31',title:'婚姻状况',width:70,align:'center'},
+			{field:'c32',title:'民族',width:70,align:'center'},
+			{field:'c33',title:'户口性质',width:150,align:'center'},
+			{field:'c34',title:'户口所在地',width:150,align:'center'},
+			{field:'c35',title:'身份证地址',width:300,align:'center'},
+			{field:'c36',title:'现居住地址',width:300,align:'center'},
+			{field:'c37',title:'本人电话',width:120,align:'center'},
+			{field:'c38',title:'公司邮箱',width:220,align:'center'},
+			{field:'c39',title:'紧急联系人姓名',width:120,align:'center'},
+			{field:'c40',title:'紧急联系人电话',width:120,align:'center'},
+			{field:'c41',title:'招聘来源',width:150,align:'center'},
+			{field:'c42',title:'合同类型',width:150,align:'center'},
+			{field:'c43',title:'合同期限类型',width:150,align:'center'},
+			{field:'c44',title:'现合同/协议主体',width:200,align:'center'},
+			{field:'c45',title:'现签合同/协议起始日期',width:200,align:'center'},
+			{field:'c46',title:'现签合同/协议终止时间',width:200,align:'center'},
+			{field:'c47',title:'录入人',width:90,align:'center'},
+			{field:'c48',title:'备注',width:100,align:'center'}
 		]]
 		,onLoadError:function(){
 			//$.messager.alert('Error','获取列表失败!请重试。','error');
@@ -139,10 +212,19 @@ function loadData(){
 
 function preImport(){
 	$('#importBtn').hide();
+	$('#importDiv').show();
 	$('#saveBtn').show();
+	$('#cancelBtn').show();
 	$('#excelFile').click();
 }
 
+function cancel(){
+	$('#importBtn').show();
+	$('#cancelBtn').hide();
+	$('#saveBtn').hide();
+	$('#importDiv').hide();
+	$('#excelFile').val('');
+}
 
 function packageData(){
 	var data = {};
@@ -154,40 +236,6 @@ function packageData(){
 	}
 	
 	return data;
-}
-
-function status(id,index,status){
-	var row = $('#serving_container').datagrid('getData').rows[index];
-	var action ;
-	if(status == 0){
-		action = '封禁';
-	}else {
-		action = '恢复';
-	}
-	$.messager.confirm('提示信息', '确认要' + action + row.realName +'么?',function(r){   
-		if (r){
-			$.ajax({
-				type : "POST",
-				url : "http://doogua.dangdang.com/bms/serving/doUpdate",
-				data:{id:id,status:status},
-				success : function(msg) {
-					if(msg == 1){
-						alert(action + "成功!!");
-						$('#serving_container').datagrid("load",{});
-						$('#serving_container').datagrid("unselectAll");
-					}else if(msg == 2){
-						alert("没有变化的字段，请确认修改内容！");
-					}else if(msg == 3){
-						alert("输入非法！");
-					}else {
-						alert("修改失败！");
-					}
-				}
-			});
-		}else{
-			return;
-		}   
-	});  
 }
 
 document.onkeydown = function(e){

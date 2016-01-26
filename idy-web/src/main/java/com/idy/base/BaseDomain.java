@@ -12,26 +12,19 @@ import com.alibaba.fastjson.annotation.JSONField;
  *
  */
 public class BaseDomain {
-	
-	/**
-	 * mysql分页参数start
-	 */
-	@Setter
-	@JSONField(serialize = false)
-	private Integer Test;
 
 	/**
 	 * mysql分页参数start
 	 */
 	@Setter
 	@JSONField(serialize = false)
-	private Integer start;
+	private Long start;
 	
 	/**
 	 * mysql分页参数limit
 	 */
 	@Setter
-	@JSONField(serialize = true)
+	@JSONField(serialize = false)
 	private Integer limit;
 	
 	/**
@@ -40,7 +33,7 @@ public class BaseDomain {
 	@Getter
 	@Setter
 	@JSONField(serialize = false)
-	private Integer startPage;
+	private Long page;
 	
 	/**
 	 * 页容量
@@ -48,17 +41,17 @@ public class BaseDomain {
 	@Getter
 	@Setter
 	@JSONField(serialize = false)
-	private Integer pageSize;
+	private Integer rows;
 
-	public Integer getStart() {
-		if(startPage == null || pageSize == null) {
+	public Long getStart() {
+		if(page == null || page == null) {
 			return start;
 		}
-		return (startPage-1) * pageSize;
+		return (page-1) * rows;
 	}
 
 	public Integer getLimit() {
-		return limit == null ? pageSize : limit;
+		return limit == null ? rows : limit;
 	}
 	
 }

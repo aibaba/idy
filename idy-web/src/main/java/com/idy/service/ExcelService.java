@@ -16,12 +16,34 @@ import com.idy.dao.ExcelMapper;
 @Service
 public class ExcelService{
 
+	protected static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ExcelService.class);
+			
 	@Autowired
 	private ExcelMapper excelMapper;
 
 	@Transactional
 	public int create(Excel excel) {
 		return excelMapper.create(excel);
+	}
+	
+	public int create(List<Excel> list, Integer sheetId) {
+		int res = 0;
+		if(list != null && list.size() >0 ) {
+			Integer version = excelMapper.selectMaxVersion(sheetId);
+			version = version == null ? 1 : ++version;
+			for(Excel e : list) {
+				try {
+					//每次sheet的整体更新，都需要新的版本号
+					e.setVersion(version);
+					if(excelMapper.create(e) == 1){
+						res++;
+					}
+				} catch (Exception e1) {
+					logger.error("保存Excel到DB时异常", e);
+				}
+			}
+		}
+		return res;
 	}
 
 	@Transactional
@@ -43,7 +65,21 @@ public class ExcelService{
 	public List<Excel> find(Excel excel) {
 		return excelMapper.find(excel);
 	}
-
+	
+	public int findMaxVersion(Integer sheetId) {
+		Excel excel = new Excel();
+		excel.setSheetId(sheetId);;
+		List<Excel> list = excelMapper.find(excel);
+		if(list == null || list.size() == 0) {
+			return 1;
+		}
+		return list.get(0).getVersion();
+	}
+	
+	public Integer selectMaxVersion(Integer sheetId) {
+		return excelMapper.selectMaxVersion(sheetId);
+	}
+	
 	@Transactional
 	public Excel findById(long id){
 		return excelMapper.findById(id);

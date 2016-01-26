@@ -5,6 +5,11 @@
 <mapper namespace="com.idy.dao.ExcelMapper">
 	<resultMap id="Excel_RM" type="Excel">
 		<id property="id" column="id" />
+		<id property="excelName" column="excel_name" />
+		<id property="sheetId" column="sheet_id" />
+		<id property="version" column="version" />
+		<id property="createTime" column="create_time" />
+		<id property="updateTime" column="update_time" />
 		<id property="c01" column="c01" />
 		<id property="c02" column="c02" />
 		<id property="c03" column="c03" />
@@ -58,12 +63,27 @@
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id,`c01`,`c02`,`c03`,`c04`,`c05`,`c06`,`c07`,`c08`,`c09`,`c10`,`c11`,`c12`,`c13`,`c14`,`c15`,`c16`,`c17`,`c18`,`c19`,`c20`,`c21`,`c22`,`c23`,`c24`,`c25`,`c26`,`c27`,`c28`,`c29`,`c30`,`c31`,`c32`,`c33`,`c34`,`c35`,`c36`,`c37`,`c38`,`c39`,`c40`,`c41`,`c42`,`c43`,`c44`,`c45`,`c46`,`c47`,`c48`,`c49`,`c50`
+		id,`excel_name`,`sheet_id`,`version`,`create_time`,`update_time`,`c01`,`c02`,`c03`,`c04`,`c05`,`c06`,`c07`,`c08`,`c09`,`c10`,`c11`,`c12`,`c13`,`c14`,`c15`,`c16`,`c17`,`c18`,`c19`,`c20`,`c21`,`c22`,`c23`,`c24`,`c25`,`c26`,`c27`,`c28`,`c29`,`c30`,`c31`,`c32`,`c33`,`c34`,`c35`,`c36`,`c37`,`c38`,`c39`,`c40`,`c41`,`c42`,`c43`,`c44`,`c45`,`c46`,`c47`,`c48`,`c49`,`c50`
 	</sql>
 
 	<select id="count" resultType="long">
 		SELECT COUNT(1) FROM excel
 		<where>
+			<if test=" null != excelName ">
+				AND `excel_name` = #{excelName}
+			</if>
+			<if test=" null != sheetId ">
+				AND `sheet_id` = #{sheetId}
+			</if>
+			<if test=" null != version ">
+				AND `version` = #{version}
+			</if>
+			<if test=" null != createTime ">
+				AND `create_time` = #{createTime}
+			</if>
+			<if test=" null != updateTime ">
+				AND `update_time` = #{updateTime}
+			</if>
 			<if test=" null != c01 ">
 				AND `c01` = #{c01}
 			</if>
@@ -220,15 +240,36 @@
 	<select id="countAll" resultType="long">
 		SELECT COUNT(1) FROM excel
 	</select>
+	
+	<select id="selectMaxVersion" resultType="int">
+		SELECT MAX(e.version)
+		FROM excel e
+		WHERE `sheet_id` = #{sheetId}
+	</select>
 
 	<insert id="create" parameterType="map" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO excel (<include refid="Base_Column_List" />)
-		VALUES (#{id},#{c01},#{c02},#{c03},#{c04},#{c05},#{c06},#{c07},#{c08},#{c09},#{c10},#{c11},#{c12},#{c13},#{c14},#{c15},#{c16},#{c17},#{c18},#{c19},#{c20},#{c21},#{c22},#{c23},#{c24},#{c25},#{c26},#{c27},#{c28},#{c29},#{c30},#{c31},#{c32},#{c33},#{c34},#{c35},#{c36},#{c37},#{c38},#{c39},#{c40},#{c41},#{c42},#{c43},#{c44},#{c45},#{c46},#{c47},#{c48},#{c49},#{c50})
+		VALUES (#{id},#{excelName},#{sheetId},#{version},#{createTime},#{updateTime},#{c01},#{c02},#{c03},#{c04},#{c05},#{c06},#{c07},#{c08},#{c09},#{c10},#{c11},#{c12},#{c13},#{c14},#{c15},#{c16},#{c17},#{c18},#{c19},#{c20},#{c21},#{c22},#{c23},#{c24},#{c25},#{c26},#{c27},#{c28},#{c29},#{c30},#{c31},#{c32},#{c33},#{c34},#{c35},#{c36},#{c37},#{c38},#{c39},#{c40},#{c41},#{c42},#{c43},#{c44},#{c45},#{c46},#{c47},#{c48},#{c49},#{c50})
 	</insert>
 
 	<delete id="del" parameterType="Excel">
 		DELETE FROM excel
 		<where>
+			<if test=" null != excelName ">
+				AND `excel_name` = #{excelName}
+			</if>
+			<if test=" null != sheetId ">
+				AND `sheet_id` = #{sheetId}
+			</if>
+			<if test=" null != version ">
+				AND `version` = #{version}
+			</if>
+			<if test=" null != createTime ">
+				AND `create_time` = #{createTime}
+			</if>
+			<if test=" null != updateTime ">
+				AND `update_time` = #{updateTime}
+			</if>
 			<if test=" null != c01 ">
 				AND `c01` = #{c01}
 			</if>
@@ -395,6 +436,21 @@
 	<update id="update" parameterType="Excel">
 		UPDATE excel
 		SET
+			<if test=" null != excelName ">
+				 `excel_name` = #{excelName},
+			</if>
+			<if test=" null != sheetId ">
+				 `sheet_id` = #{sheetId},
+			</if>
+			<if test=" null != version ">
+				 `version` = #{version},
+			</if>
+			<if test=" null != createTime ">
+				 `create_time` = #{createTime},
+			</if>
+			<if test=" null != updateTime ">
+				 `update_time` = #{updateTime},
+			</if>
 			<if test=" null != c01 ">
 				 `c01` = #{c01},
 			</if>
@@ -553,6 +609,21 @@
 		SELECT <include refid="Base_Column_List" /> 
 		FROM excel
 		<where>
+			<if test=" null != excelName ">
+				AND `excel_name` = #{excelName}
+			</if>
+			<if test=" null != sheetId ">
+				AND `sheet_id` = #{sheetId}
+			</if>
+			<if test=" null != version ">
+				AND `version` = #{version}
+			</if>
+			<if test=" null != createTime ">
+				AND `create_time` = #{createTime}
+			</if>
+			<if test=" null != updateTime ">
+				AND `update_time` = #{updateTime}
+			</if>
 			<if test=" null != c01 ">
 				AND `c01` = #{c01}
 			</if>

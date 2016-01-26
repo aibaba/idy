@@ -7,13 +7,33 @@ import com.idy.base.BaseDomain;
 
 /**
  * @Administrator 
- * 2015-11-09
+ * 2016-01-26
 */
 public class Excel extends BaseDomain {
 
 	@Setter
 	@Getter
 	private Integer id;
+
+	@Setter
+	@Getter
+	private String excelName;
+
+	@Setter
+	@Getter
+	private Integer sheetId;
+
+	@Setter
+	@Getter
+	private Integer version;
+
+	@Setter
+	@Getter
+	private java.util.Date createTime;
+
+	@Setter
+	@Getter
+	private java.util.Date updateTime;
 
 	@Setter
 	@Getter
