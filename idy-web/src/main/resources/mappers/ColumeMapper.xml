@@ -5,6 +5,7 @@
 <mapper namespace="com.idy.dao.ColumeMapper">
 	<resultMap id="Colume_RM" type="Colume">
 		<id property="id" column="id" />
+		<id property="sheetId" column="sheet_id" />
 		<id property="enName" column="en_name" />
 		<id property="znName" column="zn_name" />
 		<id property="sequence" column="sequence" />
@@ -14,12 +15,15 @@
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id,`en_name`,`zn_name`,`sequence`,`type`,`status`,`description`
+		id,`sheet_id`,`en_name`,`zn_name`,`sequence`,`type`,`status`,`description`
 	</sql>
 
 	<select id="count" resultType="long">
 		SELECT COUNT(1) FROM colume
 		<where>
+			<if test=" null != sheetId ">
+				AND `sheet_id` = #{sheetId}
+			</if>
 			<if test=" null != enName ">
 				AND `en_name` = #{enName}
 			</if>
@@ -47,12 +51,15 @@
 
 	<insert id="create" parameterType="map" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO colume (<include refid="Base_Column_List" />)
-		VALUES (#{id},#{enName},#{znName},#{sequence},#{type},#{status},#{description})
+		VALUES (#{id},#{sheetId},#{enName},#{znName},#{sequence},#{type},#{status},#{description})
 	</insert>
 
 	<delete id="del" parameterType="Colume">
 		DELETE FROM colume
 		<where>
+			<if test=" null != sheetId ">
+				AND `sheet_id` = #{sheetId}
+			</if>
 			<if test=" null != enName ">
 				AND `en_name` = #{enName}
 			</if>
@@ -87,6 +94,9 @@
 	<update id="update" parameterType="Colume">
 		UPDATE colume
 		SET
+			<if test=" null != sheetId ">
+				 `sheet_id` = #{sheetId},
+			</if>
 			<if test=" null != enName ">
 				 `en_name` = #{enName},
 			</if>
@@ -113,6 +123,9 @@
 		SELECT <include refid="Base_Column_List" /> 
 		FROM colume
 		<where>
+			<if test=" null != sheetId ">
+				AND `sheet_id` = #{sheetId}
+			</if>
 			<if test=" null != enName ">
 				AND `en_name` = #{enName}
 			</if>

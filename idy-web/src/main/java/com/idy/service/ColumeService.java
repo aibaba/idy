@@ -23,6 +23,26 @@ public class ColumeService{
 	public int create(Colume colume) {
 		return columeMapper.create(colume);
 	}
+	
+	@Transactional
+	public int create(List<Colume> list) {
+		int res = 0;
+		if(list != null && list.size() > 0) {
+			this.del(list.get(0).getSheetId());
+			for(Colume c : list){
+				if(columeMapper.create(c) > 0) {
+					res++;
+				}
+			}
+		}
+		return res;
+	}
+	
+	public int del(Integer sheetId) {
+		Colume d = new Colume();
+		d.setSheetId(sheetId);
+		return columeMapper.del(d);
+	}
 
 	@Transactional
 	public int update(Colume colume) {
@@ -42,6 +62,12 @@ public class ColumeService{
 	@Transactional
 	public List<Colume> find(Colume colume) {
 		return columeMapper.find(colume);
+	}
+	
+	public List<Colume> findBySheetId(Integer sheetId) {
+		Colume c = new Colume();
+		c.setSheetId(sheetId);
+		return columeMapper.find(c);
 	}
 
 	@Transactional

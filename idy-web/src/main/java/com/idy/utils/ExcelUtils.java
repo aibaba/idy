@@ -72,7 +72,7 @@ public class ExcelUtils {
 			XSSFSheet sheet = wb.getSheetAt(sheetId-1);
 			//TODO 第一行忽略 
 			Date now = new Date();
-			for(int i = 1; i< sheet.getPhysicalNumberOfRows(); i++) {
+			for(int i = 0; i< sheet.getPhysicalNumberOfRows(); i++) {
 				XSSFRow _row = sheet.getRow(i);
 				if(_row != null) {
 					Excel e = getNewRow(excelFile, sheetId, _row, now);
@@ -118,7 +118,7 @@ public class ExcelUtils {
 				 //sheet的每行
 				 int _lastRow = hssfSheet.getLastRowNum();
 				 //TODO 第一行，列名暂时先过滤掉
-				 for (int _rowNum = 1; _rowNum <= _lastRow; _rowNum++) {
+				 for (int _rowNum = 0; _rowNum <= _lastRow; _rowNum++) {
 					 HSSFRow _hssfRow = hssfSheet.getRow(_rowNum);
 					 if (_hssfRow != null) {
 						 list.add(getNewRow(excelFile, sheetId, _hssfRow, now));

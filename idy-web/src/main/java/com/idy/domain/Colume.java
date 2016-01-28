@@ -7,13 +7,17 @@ import com.idy.base.BaseDomain;
 
 /**
  * @Administrator 
- * 2015-11-09
+ * 2016-01-28
 */
 public class Colume extends BaseDomain {
 
 	@Setter
 	@Getter
 	private Integer id;
+
+	@Setter
+	@Getter
+	private Integer sheetId;
 
 	@Setter
 	@Getter
