@@ -39,7 +39,11 @@
 		    	#if($weather)
 			    	<div style='float:left;margin-left: 50px;'>
 			    		<h2 style="font-size: 14px; font-weight: bold; color: white; margin-top: 15px; margin-left: 30px;">
-			    			北京天气：${weather.weather} 白天${weather.temp1} 夜间${weather.temp2}
+			    			#if($weather.temp1 > $weather.temp2)
+			    				北京天气：${weather.weather} 白天${weather.temp1} 夜间${weather.temp2}
+			    			#else
+			    				北京天气：${weather.weather} 今天夜间${weather.temp1} 明天白天${weather.temp2}
+			    			#end
 			    			<a href="http://www.baidu.com/link?url=WQ1sZomVCbP94wBzp4mmidHBHGrIG1cw5-eVVgZFTimOxOHk0w7Wf9wrPvsVRPhTC_7_9d6ec6QACK15J7811K" target="_blank">&nbsp;查看详情</a>
 			    		</h2>
 			    	</div>
