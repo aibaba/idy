@@ -15,7 +15,9 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -29,6 +31,33 @@ public class ExcelUtils {
 	public static void main(String[] args) throws Exception {
 		parseExcel97_2003();
 		//parseExcel07_2013();
+	}
+	
+	public static Sheet write_07_2010(File file, List<Excel> list, Integer sheetId) throws Exception {
+		@SuppressWarnings("resource")
+		XSSFWorkbook workBook = new XSSFWorkbook(file);
+		XSSFSheet sheet = workBook.createSheet();
+		/*sheet.setColumnWidth(1, 5000);// 设置第二列的宽度为
+		sheet.setColumnWidth(2, 5000);// 设置第二列的宽度为
+		sheet.setColumnWidth(3, 5000);// 设置第二列的宽度为
+		*/
+		XSSFCellStyle style = workBook.createCellStyle();// 创建样式对象
+		for(int i=1; i<= list.size(); i++){
+			XSSFRow rowData = sheet.createRow(i);// 创建一个行对象
+			XSSFCell c1 = rowData.createCell(0);// 创建单元格
+			XSSFCell c2 = rowData.createCell(1);// 创建单元格
+			XSSFCell c3 = rowData.createCell(2);// 创建单元格
+			
+			c1.setCellValue(list.get(i-1).getC01());
+			c2.setCellValue(list.get(i-1).getC02());
+			c3.setCellValue(list.get(i-1).getC03());
+			
+			c1.setCellStyle(style);// 应用样式对象
+			c2.setCellStyle(style);// 应用样式对象
+			c3.setCellStyle(style);// 应用样式对象
+		}
+		
+		return sheet;
 	}
 	
 	public static List<Excel> parse_07_2010(MultipartFile excelFile, Integer sheetId) throws Exception {

@@ -92,12 +92,12 @@ $(function(){
 		url:'roster/serving/list.json?sheetId=1',
 		queryParams:packageData(),
 		rownumbers:false,
-		singleSelect:true,
+		singleSelect:false,//多选
 		remoteSort: false,
 		pagination:true,
 		pageSize: 10,//每页显示的记录条数 
         pageList: [5,10,15,20,50],
-		//idField:'c01',
+		idField:'c01',
 		toolbar:[{
 		 			id:'add',
 		 			text:'新增',
@@ -124,22 +124,60 @@ $(function(){
 		 		}
 		 		,{
 		 			id:'export',
-		 			text:'导出',
+		 			text:'导出.xls',
 		 			iconCls:'icon-redo',
 		 			handler:function(){
-			    		window.location.href = $rdm.baseUrl() + "/serving/add";
+			    		var arr = $('#serving_container').datagrid("getSelections");
+			    		if(arr.length==0){
+			    			alert("先勾选，-_-");
+			    		}else{
+			    			var ids =[];
+	    	    			for(var i=0;i<arr.length;i++){
+	    	    				ids.push(arr[i].c01);
+	    	    			}
+	    	    			var ids = ids.join(",")
+			    			window.location.href=  $rdm.baseUrl() + "/roster/serving/export/" + 1 + "/xls?ids=" + ids;
+			    		}  
+			    	}
+		 		}
+		 		,{
+		 			id:'export',
+		 			text:'导出.xlsx',
+		 			iconCls:'icon-redo',
+		 			handler:function(){
+			    		var arr = $('#serving_container').datagrid("getSelections");
+			    		if(arr.length==0){
+			    			alert("先勾选，-_-");
+			    		}else{
+			    			var ids =[];
+	    	    			for(var i=0;i<arr.length;i++){
+	    	    				ids.push(arr[i].c01);
+	    	    			}
+	    	    			var ids = ids.join(",")
+			    			window.location.href=  $rdm.baseUrl() + "/roster/serving/export/" + 1 + "/xlsx?ids=" + ids;
+			    		}  
 			    	}
 		 		}
 		 		,{
 		 			id:'exportAll',
-		 			text:'导出全部',
+		 			text:'导出全部.xls',
 		 			iconCls:'icon-redo',
 		 			handler:function(){
-			    		window.location.href = $rdm.baseUrl() + "/serving/add";
+			    		window.location.href=  $rdm.baseUrl() + "/roster/serving/export/" + 1 + "/xls?ids=all";
+			    	}
+		 		}
+		 		,{
+		 			id:'exportAll',
+		 			text:'导出全部.xlsx',
+		 			iconCls:'icon-redo',
+		 			handler:function(){
+			    		window.location.href=  $rdm.baseUrl() + "/roster/serving/export/" + 1 + "/xlsx?ids=all";
 			    	}
 		 		}
 		 ],
 		frozenColumns:[[    
+			{field:'ck',checkbox:true},
+			//{field:'id',title:'ID',width:45,align:'center',hidden:'true'},
 			{field:'c01',title:'序号',width:45,align:'center'},
 			{field:'c02',title:'工号',width:75,align:'center'},
 			{field:'c03',title:'姓名',width:75,align:'center'},
