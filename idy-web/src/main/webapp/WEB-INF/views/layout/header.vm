@@ -32,18 +32,14 @@
 	<body>
 		<!--头部-->
 		<div id="layout" class="easyui-layout" data-options="fit:true"> 
-		    <div id="header_container" data-options="region:'north',split:true" style="background:url(images/15101801.jpg);height:80px;">
+		    <div id="header_container" data-options="region:'north',split:true" style="background:url(images/15101802.jpg);height:80px;">
 		    	<div style="float:left">
 		    		<h2 style="font-size: 24px; font-weight: bold; color: white; margin-top: 20px; margin-left: 5px;">花名册管理台</h2>
 		    	</div>
 		    	#if($weather)
 			    	<div style='float:left;margin-left: 50px;'>
 			    		<h2 style="font-size: 14px; font-weight: bold; color: white; margin-top: 15px; margin-left: 30px;">
-			    			#if($weather.temp1 > $weather.temp2)
-			    				北京天气：${weather.weather} 白天${weather.temp1} 夜间${weather.temp2}
-			    			#else
-			    				北京天气：${weather.weather} 今天夜间${weather.temp1} 明天白天${weather.temp2}
-			    			#end
+			    			北京天气：${weather.weather} 气温${weather.temp1}/${weather.temp2}
 			    			<a href="http://www.baidu.com/link?url=WQ1sZomVCbP94wBzp4mmidHBHGrIG1cw5-eVVgZFTimOxOHk0w7Wf9wrPvsVRPhTC_7_9d6ec6QACK15J7811K" target="_blank">&nbsp;查看详情</a>
 			    		</h2>
 			    	</div>
