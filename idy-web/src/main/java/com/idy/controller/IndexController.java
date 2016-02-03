@@ -1,11 +1,21 @@
 package com.idy.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.idy.base.BaseController;
+import com.idy.base.EUIDataGridPage;
+import com.idy.constant.Constant;
+import com.idy.domain.SheetLog;
+import com.idy.service.SheetLogService;
 
 /**
  * 首页、默认页控制
@@ -16,9 +26,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("")
-public class IndexController {
+public class IndexController extends BaseController{
 	
 	protected static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(IndexController.class);
+	
+	@Autowired
+	private SheetLogService sheetLogService;
 	
 	@RequestMapping(value = "/index")
     public String index(
@@ -63,4 +76,31 @@ public class IndexController {
 		return "404";
     }
 	
+	@RequestMapping(value = "/log/roster")
+    public String logRoster(
+            HttpServletRequest request, HttpServletResponse response,
+            Model model) {
+		initBasicInfo(request, model, "日志", "/log/roster", "在职-操作日志", "/log/roster");
+		return "log/rosterLog";
+    }
+	
+	@RequestMapping(value = "/log/list.json")
+	@ResponseBody
+    public EUIDataGridPage<SheetLog> logList(
+            HttpServletRequest request, 
+            SheetLog log,
+            HttpServletResponse response) throws Exception {
+		response.setContentType("text/html;charset=utf-8");
+		List<SheetLog> list = sheetLogService.find(log);
+		if(list != null) {
+			for(SheetLog l : list) {
+				l.setCreateTimeStr(Constant.YHS_DATEFORMAT.format(l.getCreateTime()));
+			}
+		}
+		long rows = sheetLogService.count(log);
+		EUIDataGridPage<SheetLog> rt = new EUIDataGridPage<SheetLog>();
+		rt.setRows(list);
+		rt.setTotal(rows);
+		return rt;
+    }
 }

@@ -1,6 +1,8 @@
 package com.idy.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,22 @@ public class ColumeService{
 
 	@Autowired
 	private ColumeMapper columeMapper;
+	
+	//sheetId_enName , cloume
+	private static Map<String ,Colume> columeMap = null;
+	
+	/*public Map<String ,Colume> getColumeMap(Integer sheetId){
+		if(columeMap == null){
+			List<Colume> list = this.findBySheetId(sheetId);
+			if(list != null){
+				columeMap = new ConcurrentHashMap<String, Colume>();
+				for(Colume c : list){
+					columeMap.put(sheetId + "+" + c.getEnName(), c);
+				}
+			}
+		}
+		return columeMap;
+	}*/
 
 	@Transactional
 	public int create(Colume colume) {
@@ -29,8 +47,24 @@ public class ColumeService{
 		int res = 0;
 		if(list != null && list.size() > 0) {
 			this.del(list.get(0).getSheetId());
-			for(Colume c : list){
+			if(columeMap == null || columeMap.size() < 1){
+				columeMap = new ConcurrentHashMap<String, Colume>();
+			}
+			for(int i=0; i<list.size(); i++){
+				Colume c = list.get(i);
+				String enName = "";
+				if(i < 9) {
+					enName = "C0" + (i + 1);
+				}else {
+					enName = "C" + (i + 1);
+				}
+				c.setEnName(enName);
+				c.setType(1);
+				c.setSequence(1);
+				c.setStatus(1);
+				c.setDescription("导入表格时自动添加");
 				if(columeMapper.create(c) > 0) {
+					columeMap.put(enName, c);
 					res++;
 				}
 			}

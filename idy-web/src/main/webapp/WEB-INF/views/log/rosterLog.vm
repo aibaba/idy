@@ -1,0 +1,142 @@
+<div id="log_query_form" style="padding: 10px 15px 10px;background-color:white;margin-bottom: 10px; border: 1px solid #95b8e7">
+	<div>
+		<div style="margin-bottom: 5px;display:inline-block;">
+			<label style="font-size:14px;color:#333" for="theme">Sheet：</label>
+			<input id="theme"  name="theme" placeholder="输入Sheet"  title="支持查询" type="text"  value=""/>
+		</div>
+		<div style="margin-bottom: 5px;display:inline-block;">
+			<label style="font-size:14px;color:#333" for="startTime">开始时间 ：</label>
+			<input id="startTime" name="startTime" class="easyui-datetimebox"/>
+		</div>
+		<div style="margin-bottom: 5px;display:inline-block;">
+			<label style="font-size:14px;color:#333" for="endTime">结束时间 ：</label>
+			<input id="endTime" name="endTime" class="easyui-datetimebox"/>
+		</div>
+	</div>
+		<a id ="queryBtn" type="button" class="easyui-linkbutton">查询</a>
+    	<a id="resetBtn" class="easyui-linkbutton" style="margin-left: 1px;">重置</a>
+</div>
+
+<div id="log_container" style="padding: 5px;">
+	<div id="log_container"></div>
+</div>
+
+<script type="text/javascript">  
+#[[
+
+$(document).ready(function() { 
+	$('#theme').val('');
+	$("#startTime").val('');
+});
+
+$(function(){
+
+	$("#resetBtn").click(reset);
+	$("#queryBtn").click(loadData);
+	
+    var serView = $.extend({}, $.fn.datagrid.defaults.view, {  
+		onAfterRender: function(target){
+			$.fn.datagrid.defaults.view.onAfterRender.call(this, target);
+			var rows = $(target).datagrid('getRows');
+			var data = $(target).datagrid('getData');
+			$(target).datagrid('getPanel').find('td[fidld!=actions]').each(function(){
+				var tmp = $(this).find('div');
+				$(this).attr('title',$(tmp).text());
+			});
+			$(target).datagrid('getPanel').find('tr[datagrid-row-index]').each(function(){
+				var index = $(this).attr('datagrid-row-index');
+				var id = rows[index]['id'];
+				var name = rows[index]['title'];
+				var actionsContainer = $(this).find('div.datagrid-cell-c1-actions');
+			});
+		}
+	});
+
+	$('#log_container').datagrid({
+		view: serView,
+		width:'99%',  
+		nowrap: false,//自动换行
+		method: 'post',
+		striped: true,//偶行使用不同背景色
+		collapsible:true,
+		//fit:true,//自动补全  
+        //fitColumns:false,
+		url:'log/list.json?sheetId=1',
+		queryParams:packageData(),
+		rownumbers: true,
+		singleSelect:false,//多选
+		remoteSort: false,
+		pagination:true,
+		pageSize: 20,//每页显示的记录条数 
+        pageList: [5,10,15,20,50],
+		idField:'id',
+		columns:[[
+			{field:'id',title:'ID',width:60,align:'center', hidden:'true'},//
+			{field:'theme',title:'Sheet',width:120,align:'center'},
+			{field:'info',title:'操作详情',width:fixWidth(0.55),align:'left'},
+			{field:'type',title:'类型',width:85,align:'center',
+				formatter:function(r){
+		 				return typeValue[r];
+		 			},styler:function(r){
+		 				return typeStyler[r];
+		 			}
+		 	},
+			{field:'createTimeStr',title:'操作时间',width:155,align:'center'}
+		]]
+		,onLoadError:function(){
+			//$.messager.alert('Error','获取列表失败!请重试。','error');
+		}
+	});
+	
+	var typeValue={
+		"0":"新增","1":"更新","2":"删除","null":"未知"
+	}
+	
+	var typeStyler={
+		"0":"color:green","1":"color:red","2":"color:orange","null":"color:grey"
+	}
+	
+});
+
+function loadData(){
+	$('#log_container').datagrid("load",packageData());
+}
+
+function packageData(){
+	var data = {};
+	var startTime = $("#startTime").datebox("getValue");
+	var endTime = $("#endTime").datebox("getValue");
+	if(startTime != '' && endTime != '' && startTime > endTime){
+		alert("-_-开始时间不能大于结束时间哦！");
+		return;
+	}
+	if( startTime != '') {
+		data.startTime = startTime;
+	}
+	if(endTime != '') {
+		data.endTime = endTime;
+	}
+	if($("#theme").val() != '') {
+		data.theme = $("#theme").val();
+	}
+	
+	return data;
+}
+
+document.onkeydown = function(e){
+	var event = e || window.event;  
+    var code = event.keyCode || event.which || event.charCode;
+	if(e.keyCode==13){
+		loadData();
+	}
+}
+
+function reset(){
+	$('#startTime').val('');
+	$('#endTime').val('');
+	$('#theme').val('');
+	window.location.reload();
+}
+]]#
+
+</script>  

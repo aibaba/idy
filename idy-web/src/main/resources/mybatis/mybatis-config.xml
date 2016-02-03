@@ -13,6 +13,8 @@
 		<!-- bean list -->
 		<typeAlias type="com.idy.domain.Colume" alias="Colume" />
 		<typeAlias type="com.idy.domain.Excel" alias="Excel" />
+		<typeAlias type="com.idy.domain.SerObj" alias="SerObj" />
+		<typeAlias type="com.idy.domain.SheetLog" alias="SheetLog" />
 		
 		<!-- vo list -->
 		

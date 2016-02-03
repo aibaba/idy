@@ -83,14 +83,14 @@ public class ExcelUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally{
-			if(excelFile.getInputStream() != null){
+			/*if(excelFile.getInputStream() != null){
 				try {
 					excelFile.getInputStream().close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 				excelFile = null;
-			}
+			}*/
 		}
 		
 		return list;
@@ -126,10 +126,10 @@ public class ExcelUtils {
 				 }
 			//}
 		} finally{
-			if(excelFile.getInputStream() != null){
+			/*if(excelFile.getInputStream() != null){
 				excelFile.getInputStream().close();
 				excelFile = null;
-			}
+			}*/
 		}
 		
 		return list;

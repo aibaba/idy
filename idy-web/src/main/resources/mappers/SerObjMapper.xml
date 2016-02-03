@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idy.dao.SerObjMapper">
+	<resultMap id="SerObj_RM" type="SerObj">
+		<id property="id" column="id" />
+		<id property="objName" column="obj_name" />
+		<id property="blobVal" column="blob_val" />
+		<id property="info" column="info" />
+		<id property="createTime" column="create_time" />
+		<id property="updateTime" column="update_time" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,`obj_name`,`blob_val`,`info`,`create_time`,`update_time`
+	</sql>
+
+	<select id="count" resultType="long">
+		SELECT COUNT(1) FROM ser_obj
+		<where>
+			<if test=" null != objName ">
+				AND `obj_name` = #{objName}
+			</if>
+			<if test=" null != blobVal ">
+				AND `blob_val` = #{blobVal}
+			</if>
+			<if test=" null != info ">
+				AND `info` = #{info}
+			</if>
+			<if test=" null != createTime ">
+				AND `create_time` = #{createTime}
+			</if>
+			<if test=" null != updateTime ">
+				AND `update_time` = #{updateTime}
+			</if>
+		</where>
+	</select>
+
+	<select id="countAll" resultType="long">
+		SELECT COUNT(1) FROM ser_obj
+	</select>
+
+	<insert id="create" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO ser_obj (<include refid="Base_Column_List" />)
+		VALUES (#{id},#{objName},#{blobVal},#{info},#{createTime},#{updateTime})
+	</insert>
+
+	<delete id="del" parameterType="SerObj">
+		DELETE FROM ser_obj
+		<where>
+			<if test=" null != objName ">
+				AND `obj_name` = #{objName}
+			</if>
+			<if test=" null != blobVal ">
+				AND `blob_val` = #{blobVal}
+			</if>
+			<if test=" null != info ">
+				AND `info` = #{info}
+			</if>
+			<if test=" null != createTime ">
+				AND `create_time` = #{createTime}
+			</if>
+			<if test=" null != updateTime ">
+				AND `update_time` = #{updateTime}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM ser_obj WHERE id = #{id}
+	</delete>
+
+	<select id="findById" resultMap="SerObj_RM" parameterType="java.lang.Long">
+		SELECT <include refid="Base_Column_List" /> 
+		FROM ser_obj 
+		WHERE id = #{id}
+	</select>
+
+	<update id="update" parameterType="SerObj">
+		UPDATE ser_obj
+		SET
+			<if test=" null != objName ">
+				 `obj_name` = #{objName},
+			</if>
+			<if test=" null != blobVal ">
+				 `blob_val` = #{blobVal},
+			</if>
+			<if test=" null != info ">
+				 `info` = #{info},
+			</if>
+			<if test=" null != createTime ">
+				 `create_time` = #{createTime},
+			</if>
+			<if test=" null != updateTime ">
+				 `update_time` = #{updateTime},
+			</if>
+			id = #{id}
+			WHERE id = #{id}
+	</update>
+
+	<select id="find" resultMap="SerObj_RM">
+		SELECT <include refid="Base_Column_List" /> 
+		FROM ser_obj
+		<where>
+			<if test=" null != objName ">
+				AND `obj_name` = #{objName}
+			</if>
+			<if test=" null != blobVal ">
+				AND `blob_val` = #{blobVal}
+			</if>
+			<if test=" null != info ">
+				AND `info` = #{info}
+			</if>
+			<if test=" null != createTime ">
+				AND `create_time` = #{createTime}
+			</if>
+			<if test=" null != updateTime ">
+				AND `update_time` = #{updateTime}
+			</if>
+		</where>
+		<if test=" null != start and null != limit">
+			LIMIT  #{start},#{limit}
+		</if>
+	</select>
+
+</mapper>

@@ -60,21 +60,19 @@ public class ExcelService{
 	public int del(Excel excel) {
 		return excelMapper.del(excel);
 	}
-
+	
 	@Transactional
 	public List<Excel> find(Excel excel) {
 		return excelMapper.find(excel);
 	}
 	
-	public int findMaxVersion(Integer sheetId) {
+	public List<Excel> find(Integer sheetId, Integer version) {
 		Excel excel = new Excel();
-		excel.setSheetId(sheetId);;
-		List<Excel> list = excelMapper.find(excel);
-		if(list == null || list.size() == 0) {
-			return 1;
-		}
-		return list.get(0).getVersion();
+		excel.setVersion(version);
+		excel.setSheetId(sheetId);
+		return excelMapper.find(excel);
 	}
+	
 	
 	public Integer selectMaxVersion(Integer sheetId) {
 		return excelMapper.selectMaxVersion(sheetId);

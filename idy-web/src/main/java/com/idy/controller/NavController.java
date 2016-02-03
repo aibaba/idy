@@ -63,6 +63,7 @@ public class NavController {
 			putTreeNode("callOutStaff", newTreeNode("调出员工", "/roster/callout", ""));
 			putTreeNode("toFormalStaff", newTreeNode("转正员工", "/roster/toformal", ""));
 			putTreeNode("secOfferStaff", newTreeNode("二次入职", "/roster/secoffer", ""));
+			putTreeNode("logRoster", newTreeNode("操作日志", "/log/roster", ""));
 		}catch (Exception e){
 			logger.error(StackTrace.getExceptionTrace(e));
 		}

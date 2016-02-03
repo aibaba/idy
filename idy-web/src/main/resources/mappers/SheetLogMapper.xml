@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idy.dao.SheetLogMapper">
+	<resultMap id="SheetLog_RM" type="SheetLog">
+		<id property="id" column="id" />
+		<id property="theme" column="theme" />
+		<id property="info" column="info" />
+		<id property="type" column="type" />
+		<id property="createTime" column="create_time" />
+		<id property="sheetId" column="sheet_id" />
+		<id property="sheetVersion" column="sheet_version" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,`theme`,`info`,`type`,`create_time`,`sheet_id`,`sheet_version`
+	</sql>
+
+	<select id="count" resultType="long">
+		SELECT COUNT(1) FROM sheet_log
+		<where>
+			<if test=" null != theme ">
+				<!-- AND `theme` = #{theme} -->
+				AND theme like  concat('%', #{theme}, '%') 
+			</if>
+			<if test=" null != info ">
+				AND `info` = #{info}
+			</if>
+			<if test=" null != type ">
+				AND `type` = #{type}
+			</if>
+			<if test=" null != createTime ">
+				AND `create_time` = #{createTime}
+			</if>
+			<if test=" null != startTime ">
+				AND `create_time` >= #{startTime}
+			</if>
+			<if test=" null != endTime ">
+				<![CDATA[AND `create_time` <= #{endTime}]]>
+			</if>
+			<if test=" null != sheetId ">
+				AND `sheet_id` = #{sheetId}
+			</if>
+			<if test=" null != sheetVersion ">
+				AND `sheet_version` = #{sheetVersion}
+			</if>
+		</where>
+	</select>
+
+	<select id="countAll" resultType="long">
+		SELECT COUNT(1) FROM sheet_log
+	</select>
+
+	<insert id="create" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO sheet_log (<include refid="Base_Column_List" />)
+		VALUES (#{id},#{theme},#{info},#{type},#{createTime},#{sheetId},#{sheetVersion})
+	</insert>
+
+	<delete id="del" parameterType="SheetLog">
+		DELETE FROM sheet_log
+		<where>
+			<if test=" null != theme ">
+				AND `theme` = #{theme}
+			</if>
+			<if test=" null != info ">
+				AND `info` = #{info}
+			</if>
+			<if test=" null != type ">
+				AND `type` = #{type}
+			</if>
+			<if test=" null != createTime ">
+				AND `create_time` = #{createTime}
+			</if>
+			<if test=" null != sheetId ">
+				AND `sheet_id` = #{sheetId}
+			</if>
+			<if test=" null != sheetVersion ">
+				AND `sheet_version` = #{sheetVersion}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM sheet_log WHERE id = #{id}
+	</delete>
+
+	<select id="findById" resultMap="SheetLog_RM" parameterType="java.lang.Long">
+		SELECT <include refid="Base_Column_List" /> 
+		FROM sheet_log 
+		WHERE id = #{id}
+	</select>
+
+	<update id="update" parameterType="SheetLog">
+		UPDATE sheet_log
+		SET
+			<if test=" null != theme ">
+				 `theme` = #{theme},
+			</if>
+			<if test=" null != info ">
+				 `info` = #{info},
+			</if>
+			<if test=" null != type ">
+				 `type` = #{type},
+			</if>
+			<if test=" null != createTime ">
+				 `create_time` = #{createTime},
+			</if>
+			<if test=" null != sheetId ">
+				 `sheet_id` = #{sheetId},
+			</if>
+			<if test=" null != sheetVersion ">
+				 `sheet_version` = #{sheetVersion},
+			</if>
+			id = #{id}
+			WHERE id = #{id}
+	</update>
+
+	<select id="find" resultMap="SheetLog_RM">
+		SELECT <include refid="Base_Column_List" /> 
+		FROM sheet_log
+		<where>
+			<if test=" null != theme ">
+				<!-- AND `theme` = #{theme} -->
+				AND theme like  concat('%', #{theme}, '%') 
+			</if>
+			<if test=" null != info ">
+				AND `info` = #{info}
+			</if>
+			<if test=" null != type ">
+				AND `type` = #{type}
+			</if>
+			<if test=" null != createTime ">
+				AND `create_time` = #{createTime}
+			</if>
+			<if test=" null != startTime ">
+				AND `create_time` >= #{startTime}
+			</if>
+			<if test=" null != endTime ">
+				<![CDATA[AND `create_time` <= #{endTime}]]>
+			</if>
+			<if test=" null != sheetId ">
+				AND `sheet_id` = #{sheetId}
+			</if>
+			<if test=" null != sheetVersion ">
+				AND `sheet_version` = #{sheetVersion}
+			</if>
+		</where>
+		order by create_time desc
+		<if test=" null != start and null != limit">
+			LIMIT  #{start},#{limit}
+		</if>
+	</select>
+
+</mapper>

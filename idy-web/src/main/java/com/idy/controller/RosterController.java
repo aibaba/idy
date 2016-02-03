@@ -6,7 +6,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -33,10 +36,14 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.idy.base.BaseController;
 import com.idy.base.EUIDataGridPage;
+import com.idy.constant.LogTypeEnum;
 import com.idy.domain.Colume;
 import com.idy.domain.Excel;
+import com.idy.domain.SheetLog;
 import com.idy.service.ColumeService;
 import com.idy.service.ExcelService;
+import com.idy.service.SerObjService;
+import com.idy.service.SheetLogService;
 import com.idy.utils.ExcelUtils;
 
 /**
@@ -56,11 +63,19 @@ public class RosterController extends BaseController {
 	
 	@Autowired
 	private ColumeService columeService;
+	
+	@Autowired
+	private SerObjService serObjService;
+	
+	@Autowired
+	private SheetLogService sheetLogService;
 
 	public static Map<Integer, String> sheetMap = new HashMap<Integer, String>();
 	
 	static {
 		sheetMap.put(1, "在职员工");
+		sheetMap.put(2, "入职员工");
+		//TODO 
 	}
 	
 	@RequestMapping(value = "/{num}")
@@ -82,7 +97,7 @@ public class RosterController extends BaseController {
     }
 	
 	/**
-	 * 获取全部的书,包括增量接口
+	 * 
 	 * @param request
 	 * @param response
 	 * @param bookId
@@ -91,10 +106,9 @@ public class RosterController extends BaseController {
 	 */
 	@RequestMapping(value = "/serving/list.json")
 	@ResponseBody
-    public EUIDataGridPage<Excel> bookList(
+    public EUIDataGridPage<Excel> list(
             HttpServletRequest request, 
             Excel excel,
-            Integer rows,
             HttpServletResponse response) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
 		Integer version = excelService.selectMaxVersion(excel.getSheetId());
@@ -102,9 +116,66 @@ public class RosterController extends BaseController {
 		List<Excel> list = excelService.find(excel);
 		EUIDataGridPage<Excel> rt = new EUIDataGridPage<Excel>();
 		rt.setRows(list);
+		long rows = excelService.count(excel);
 		rt.setTotal(rows);
 		return rt;
     }
+	
+	@RequestMapping(value = "/serving/del/{sheetId}")
+	@ResponseBody
+    public Map<String, Object> del(
+            HttpServletRequest request,
+            @PathVariable Integer sheetId,
+            @RequestParam String ids,
+            HttpServletResponse response) throws Exception {
+		response.setContentType("text/html;charset=utf-8");
+		int succ = 0;
+		int fail = 0;
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(!StringUtils.isEmpty(ids)){
+			String[] arr = ids.split(",");
+			for(String s : arr){
+				if(excelService.delById(Integer.parseInt(s)) > 0){
+					succ++;
+				}else {
+					fail++;
+				}
+			}
+			map.put("succ", succ);
+		}
+		map.put("title", "提示信息");
+		String msg = "成功删除：" + succ + "条";
+		if(fail > 0) {
+			msg = ",失败删除：" + fail  + "条";
+		}
+		map.put("msg", msg);
+
+		//response.getWriter().write(JSON.toJSONString(map));
+		return map;
+	}
+	
+	@RequestMapping(value = "/serving/recovery/{sheetId}")
+	@ResponseBody
+    public int recovery(
+            HttpServletRequest request,
+            @PathVariable Integer sheetId,
+            HttpServletResponse response) throws Exception {
+		response.setContentType("text/html;charset=utf-8");
+		//删除当前version最大的即可
+		Integer version = excelService.selectMaxVersion(sheetId);
+		if(version == 0) {
+			return -1;
+		}
+		if(version.intValue() == 1){
+			//只有一版
+			return 0;
+		}
+		Excel excel = new Excel();
+		excel.setSheetId(sheetId);
+		excel.setVersion(version);
+		int res = excelService.del(excel);
+		return res;
+	}
 	
 	@RequestMapping(value = "/serving/import.json")
 	@ResponseBody
@@ -125,10 +196,16 @@ public class RosterController extends BaseController {
 				} else if(".xlsx".equals(type) ){
 					list = ExcelUtils.parse_07_2010(excelFile, sheetId);
 				}
+				
+				int saveSerObjResult = serObjService.create(list);
+				List<Excel> data = list.subList(1, list.size());
+				res = excelService.create(data, sheetId);
 				//保存列
-				res = excelService.create(list.subList(1, list.size()), sheetId);
-				Excel excel = list.subList(0, 1).get(0);
-				columeService.create(this.getColumes(excel, sheetId));
+				Excel excelColume = list.subList(0, 1).get(0);
+				int saveColumeResult = columeService.create(this.getColumes(excelColume, sheetId));
+				this.saveColumeLog(excelColume);
+				this.saveLog(data);
+				logger.info("导入Sheet时,保存SerObj结果是：" + saveSerObjResult + ",保存Excel结果：" + res + ",保存colume的结果： " + saveColumeResult);
 			}
 		} catch (Exception e) {
 			logger.error("导入Excel文件时异常", e);
@@ -137,6 +214,184 @@ public class RosterController extends BaseController {
 		
 		return res;
     }
+	
+	private void saveColumeLog(Excel curCol) throws Exception{
+		//如果column有变化需要记录
+		List<Colume> curColList = this.getColumes(curCol, curCol.getSheetId());
+		List<Colume> preColList = columeService.findBySheetId(curCol.getSheetId());
+		if(preColList != null && curColList != null && curColList.size() > 0 && preColList.size() > 0){
+			int size = preColList.size() > curColList.size() ? preColList.size() : curColList.size();
+			StringBuffer info = new StringBuffer();
+			for(int i=0; i<size; i++){
+				if(i >= preColList.size()){
+					info.append("新增列：" + curColList.get(i).getZnName() + "；");
+				}else if(i >= curColList.size()){
+					info.append("删除列：" + preColList.get(i).getZnName() + "；");
+				} else if(!preColList.get(i).getZnName().equals(curColList.get(i).getZnName())){
+					info.append("变化列：" + preColList.get(i).getZnName() + "变成了" + curColList.get(i).getZnName() + "；"); 
+				}
+			}
+			SheetLog log = new SheetLog();
+			if(info.length() > 4){
+				log.setInfo(info.toString());
+				//log.setTheme("操作:导入sheet" + sheetMap.get(curCol.getSheetId())+"，成功");
+				log.setTheme(sheetMap.get(curCol.getSheetId()));
+				log.setType(LogTypeEnum.UPDATE.getCode() + "");
+				log.setSheetId(curCol.getSheetId());
+				log.setCreateTime(new Date());
+				log.setSheetVersion(excelService.selectMaxVersion(curCol.getSheetId()));
+				sheetLogService.create(log);
+			}else {
+				//log.setTheme("操作:导入sheet" + sheetMap.get(curCol.getSheetId())+"，成功");
+				//log.setInfo("列不变替换");
+				//log.setType("insert_colume");
+			}
+		}
+	}
+	
+	private void saveLog(List<Excel> curList){
+		if(curList == null || curList.size() < 1) {
+			return ;
+		}
+		int maxV = excelService.selectMaxVersion(curList.get(0).getSheetId());
+		if(maxV < 2) {
+			this.saveInsertSheetLog(curList.get(0).getSheetId(), maxV);
+			return;
+		}
+		List<Excel> preList = excelService.find(curList.get(0).getSheetId(), maxV-1);
+		if(preList == null || preList.size() == 0){
+			this.saveInsertSheetLog(curList.get(0).getSheetId(), maxV);
+			return;
+		}
+		boolean unChangeFlag = true;
+		for(Excel curE : curList){
+			Excel preE = this.getFormList(curE.getC02(), preList);
+			String info = null;
+			SheetLog log = new SheetLog();
+			if(preE == null) {
+				//新增行，直接记录新增的行的序号，删减同理
+				info = "<a style='color:blue'>新增数据 ： </a>序号=" + curE.getC01() + "，工号="+ curE.getC02() + ",姓名=" + curE.getC03();
+				log.setType(LogTypeEnum.ADD.getCode() + "");
+			}else {
+				String diff = null;
+				try {
+					diff = compare(curE, preE);
+				} catch (Exception e) {
+					logger.error("save log时，在比较Excel行的变化时，出错", e);
+				}
+				if(diff != null) {
+					info = diff;
+					log.setType(LogTypeEnum.UPDATE.getCode() + "");
+				}
+			}
+			if(!StringUtils.isEmpty(info)){
+				log.setSheetId(curE.getSheetId());
+				log.setCreateTime(new Date());
+				log.setSheetVersion(curE.getVersion()-1);
+				log.setInfo(info);
+				//log.setTheme("数据变化：导入sheet" + sheetMap.get(curE.getSheetId())+"操作");
+				log.setTheme(sheetMap.get(curE.getSheetId()));
+				sheetLogService.create(log);
+				unChangeFlag = false;
+			}
+		}
+		//如果是sheet变化，则以每行为单位记录，前后变化的日志【考虑到每行变化应该不大】
+		for(Excel preE : preList) {
+			Excel curE = this.getFormList(preE.getC02(), curList);
+			if(curE == null) {
+				SheetLog log = new SheetLog();
+				//删除的情况： "<a style='color:green'>" + col.getZnName()+ "：</a>"
+				String info = "<a style='color:orange'>删除数据 ：</a> 序号=" + preE.getC01() + "，工号="+ preE.getC02() + ",姓名=" + preE.getC03();
+				log.setType(LogTypeEnum.DEL.getCode() + "");
+				//log.setTheme("数据变化：导入sheet" + sheetMap.get(preE.getSheetId())+"操作");
+				log.setTheme(sheetMap.get(preE.getSheetId()));
+				log.setSheetId(preE.getSheetId());
+				log.setCreateTime(new Date());
+				log.setSheetVersion(preE.getVersion());
+				log.setInfo(info);
+				sheetLogService.create(log);
+				unChangeFlag = false;
+			}
+		}
+		if(unChangeFlag) {
+			this.saveInsertSheetLog(curList.get(0).getSheetId(), maxV);
+		}
+	}
+	
+	private void saveInsertSheetLog(Integer sheetId, Integer version){
+		SheetLog log = new SheetLog();
+		String info = "<a style='color:bule'>插入sheet：</a>" + sheetMap.get(sheetId);
+		log.setType(LogTypeEnum.ADD.getCode() + "");
+		log.setTheme(sheetMap.get(sheetId));
+		log.setSheetId(sheetId);
+		log.setCreateTime(new Date());
+		log.setSheetVersion(version);
+		log.setInfo(info);
+		sheetLogService.create(log);
+	}
+	
+	public String compare(Excel curE, Excel preE) throws Exception{
+		Method[] ms = curE.getClass().getMethods();
+		StringBuffer sb = new StringBuffer();
+		boolean isSame = true;
+		List<Colume> list = columeService.findBySheetId(preE.getSheetId());
+		Map<String, String> nameMap = new HashMap<String, String>();
+		if(list != null){
+			for(Colume col : list){
+				nameMap.put(col.getEnName(), "<a style='color:green'>" + col.getZnName()+ "：</a>");
+			}
+		}
+		for(Method m : ms){
+			String metName = m.getName();
+			if(metName.startsWith("getC")){
+				metName = metName.replace("get", "");
+				try {
+					Integer.parseInt(metName.substring(1, metName.length()));
+				} catch (Exception e) {
+					continue;
+				}
+				Object o1 = m.invoke(curE); 
+				Object o2 = m.invoke(preE);
+				if(o1 == null && o2 != null) {
+					if(sb.length() > 0) {
+						sb.append("，");
+					}
+					sb.append(nameMap.get(metName)  + "由" + (String)o2 + "变成了空"); 
+					isSame = false;
+				}else if(o1 != null && o2 == null)  {
+					if(sb.length() > 0) {
+						sb.append("，");
+					}
+					sb.append(nameMap.get(metName) + "由空变成了" + (String)o1 + ""); 
+					isSame = false;
+				}else if(o1 != null && o2 != null){
+					String s1 = o1.toString();
+					String s2 = o2.toString();//此处不能强转，(String)o2会报错
+					if(!s1.equals(s2)){
+						isSame = false;
+						if(sb.length() > 0) {
+							sb.append("，");
+						}
+						sb.append(nameMap.get(metName) + "由" + s2+ "变成了" + s1); 
+					}
+				}
+			}
+		}
+		if(isSame){
+			return null;
+		}
+		return  sb.append("(<a style='color:red'>姓名:" + preE.getC03()+ "</a>)").toString();
+	}
+	
+	private Excel getFormList(String c02, List<Excel> list){//c02是工号，可认为是唯一的
+		if(list == null) return null;
+		for(Excel e : list){
+			if(c02.equals(e.getC02())){
+				return e;
+			}
+		}
+		return null;
+	}
 	
 	private List<Colume> getColumes(Excel e, Integer sheetId) {
 		List<Colume> list = new ArrayList<Colume>();
@@ -395,10 +650,6 @@ public class RosterController extends BaseController {
             HttpServletResponse response) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
 		request.setCharacterEncoding("UTF-8");
-		/*int res = 0;
-		if(StringUtils.isEmpty(ids)){
-			return -1;
-		}*/
 		String fileName = sheetMap.get(sheetId) + "." + type;
 		response.setContentType("application/x-msdownload;");  
 		response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes("utf-8"), "ISO8859-1"));  
