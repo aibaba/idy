@@ -116,9 +116,12 @@ public class RosterController extends BaseController {
 	@RequestMapping(value = "/serving")
     public String serving(
             HttpServletRequest request, HttpServletResponse response,
+            String type,
             Model model) {
-		//initBasicInfo(request, model, "花名册", "/roster/serving", "在职员工", "/roster/serving");
-		model.addAttribute("isTab", "false");
+		if(!StringUtils.isEmpty(type)){
+			initBasicInfo(request, model, "花名册", "/roster/serving", "在职员工", "/roster/serving");
+			model.addAttribute("isTab", "false");
+		}
 		return "roster/serving";
     }
 	

@@ -56,14 +56,14 @@ public class NavController {
 	 */
 	public void buildAuthNodes(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			putTreeNode("servingStaff", newTreeNode("在职员工", "/roster/serving", ""));
+			putTreeNode("servingStaff", newTreeNode("在职员工", "/roster/serving?type=node", ""));
 			putTreeNode("rosterTab", newTreeNode("Tab方式", "/roster/", ""));
-			/*putTreeNode("entryStaff", newTreeNode("入职员工", "/roster/entry", ""));
+			putTreeNode("entryStaff", newTreeNode("入职员工", "/roster/entry", ""));
 			putTreeNode("leaveStaff", newTreeNode("离职员工", "/roster/leave", ""));
 			putTreeNode("callInStaff", newTreeNode("调入员工", "/roster/callin", ""));
 			putTreeNode("callOutStaff", newTreeNode("调出员工", "/roster/callout", ""));
 			putTreeNode("toFormalStaff", newTreeNode("转正员工", "/roster/toformal", ""));
-			putTreeNode("secOfferStaff", newTreeNode("二次入职", "/roster/secoffer", ""));*/
+			putTreeNode("secOfferStaff", newTreeNode("二次入职", "/roster/secoffer", ""));
 			putTreeNode("logRoster", newTreeNode("操作日志", "/log/roster", ""));
 		}catch (Exception e){
 			logger.error(StackTrace.getExceptionTrace(e));
