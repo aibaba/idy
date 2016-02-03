@@ -1,0 +1,77 @@
+<div id="tabs" style="padding:0 0;">
+</div>
+
+<script type="text/javascript">  
+#[[
+	$('#tabs').tabs({
+	    border:false,
+		onSelect:function(title,index){
+			if(title == '在职员工'){
+				$("#serving_container").datagrid('load', packageData(1));
+			}else if(title == '入职员工'){
+				$("#serving_container").datagrid('load', packageData(2));
+			}else if(title == '离职员工'){
+				$("#serving_container").datagrid('load', packageData(3));
+			}else if(title == '调入员工'){
+				$("#serving_container").datagrid('load', packageData(4));
+			}else if(title == '调出员工'){
+				$("#serving_container").datagrid('load', packageData(5));
+			}else if(title == '转正员工'){
+				$("#serving_container").datagrid('load', packageData(6));
+			}else if(title == '二次入职'){
+				$("#serving_container").datagrid('load', packageData(7));
+			}
+		}
+	});
+	
+	$('#tabs').tabs('add',{
+		width:200,
+		height:200,
+	    title:'在职员工',
+	    href: "roster/serving/" + 1,
+		selected:true,
+	    closable:false
+	}).tabs('add',{
+	    title:'入职员工',
+	    href: "roster/serving/" + 2,
+		selected: false,
+	    closable:false
+	}).tabs('add',{
+	    title:'离职员工',
+	    href: "roster/serving/3",
+		selected: false,
+	    closable:false
+	}).tabs('add',{
+	    title:'调入员工',
+	    href: "roster/serving/4",
+		selected: false,
+	    closable:false
+	}).tabs('add',{
+	    title:'调出员工',
+	    href: "roster/serving/5",
+		selected: false,
+	    closable:false
+	}).tabs('add',{
+	    title:'转正员工',
+	    href: "roster/serving/6",
+		selected: false,
+	    closable:false
+	}).tabs('add',{
+	    title:'二次入职',
+	    href: "roster/serving/7",
+		selected: false,
+	    closable:false
+	});
+
+	//重置大小
+	$("#tabs").css("display","block").tabs('resize');
+	
+	//param
+	function packageData(sheetId){
+		var data = {};
+		data.sheetId = sheetId;
+		return data;
+	}
+]]#
+
+</script>

@@ -72,10 +72,26 @@ public class RosterController extends BaseController {
 
 	public static Map<Integer, String> sheetMap = new HashMap<Integer, String>();
 	
+	public static Map<Integer, String> sheetPage = new HashMap<Integer, String>();
+	
 	static {
+		//sheet名称
 		sheetMap.put(1, "在职员工");
 		sheetMap.put(2, "入职员工");
-		//TODO 
+		sheetMap.put(3, "离职员工");
+		sheetMap.put(4, "调入员工");
+		sheetMap.put(5, "调出员工");
+		sheetMap.put(6, "转正员工");
+		sheetMap.put(7, "二次员工");
+		
+		//页面
+		sheetPage.put(1, "serving");
+		sheetPage.put(2, "entry");
+		sheetPage.put(3, "leave");
+		sheetPage.put(4, "callin");
+		sheetPage.put(5, "callout");
+		sheetPage.put(6, "toformal");
+		sheetPage.put(7, "secoffer");
 	}
 	
 	@RequestMapping(value = "/{num}")
@@ -88,12 +104,30 @@ public class RosterController extends BaseController {
 		return "excel/sheet" + num;
     }
 	
+	@RequestMapping(value = "/serving/{sheetId}")
+    public String serving(
+    		HttpServletRequest request, HttpServletResponse response,
+            @PathVariable Integer sheetId,//sheet的编号
+            Model model) {
+		//initBasicInfo(request, model, "花名册", "/roster/", sheetMap.get(sheetId), "/roster/serving/" + sheetId);
+		return "roster/" + sheetPage.get(sheetId);
+    }
+	
 	@RequestMapping(value = "/serving")
     public String serving(
             HttpServletRequest request, HttpServletResponse response,
             Model model) {
-		initBasicInfo(request, model, "花名册", "/roster/serving", "在职员工", "/roster/serving");
+		//initBasicInfo(request, model, "花名册", "/roster/serving", "在职员工", "/roster/serving");
+		model.addAttribute("isTab", "false");
 		return "roster/serving";
+    }
+	
+	@RequestMapping(value = "/")
+    public String roster(
+            HttpServletRequest request, HttpServletResponse response,
+            Model model) {
+		initBasicInfo(request, model, "花名册-Excel", "/roster/serving");
+		return "roster/tab";
     }
 	
 	/**
