@@ -107,8 +107,9 @@ public class CodeUtils {
 		fieldMap.put("INT UNSIGNED", "Integer");
 		fieldMap.put("BIGINT", "Long");
 		fieldMap.put("INT", "Integer");
-		fieldMap.put("DECIMAL", "String");
+		fieldMap.put("DECIMAL", "java.math.BigDecimal");
 		fieldMap.put("DATETIME", "java.util.Date");//String
+		fieldMap.put("DATE", "java.util.Date");//String
 		fieldMap.put("LONGBLOB", "byte[]");
 		fieldMap.put("BLOB", "byte[]");
 		fieldMap.put("VARBINARY", "byte[]");
