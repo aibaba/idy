@@ -102,7 +102,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.1.41</version>
+			<version>1.2.28</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -336,6 +336,32 @@
             <artifactId>redisson</artifactId>
             <version>2.1.4</version>
         </dependency>
+        <dependency>
+		    <groupId>com.taobao.pamirs.schedule</groupId>
+		    <artifactId>tbschedule</artifactId>
+		    <version>3.3.3.2</version>
+		</dependency>
+		<dependency>  
+	        <groupId>org.springframework.data</groupId>  
+	        <artifactId>spring-data-mongodb</artifactId>  
+	        <version>1.2.1.RELEASE</version>  
+	        <type>jar</type>  
+	        <scope>compile</scope>  
+	    </dependency>  
+	    <dependency>  
+	        <groupId>org.springframework.data</groupId>  
+	        <artifactId>spring-data-mongodb-cross-store</artifactId>  
+	        <version>1.2.1.RELEASE</version>  
+	        <type>jar</type>  
+	        <scope>compile</scope>  
+	    </dependency>  
+	    <dependency>  
+	        <groupId>org.springframework.data</groupId>  
+	        <artifactId>spring-data-mongodb-log4j</artifactId>  
+	        <version>1.2.1.RELEASE</version>  
+	        <type>jar</type>  
+	        <scope>compile</scope>  
+	    </dependency>
 	</dependencies>
 
 	<build>

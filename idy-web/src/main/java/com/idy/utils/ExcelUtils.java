@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -28,11 +30,15 @@ import com.idy.domain.Excel;
 
 public class ExcelUtils {
 
-	public static void main(String[] args) throws Exception {
-		parseExcel97_2003();
-		//parseExcel07_2013();
+	/*public static void main(String[] args) throws Exception {
+		String file = "E:/4.基金项目:/开户失败用户数据.xlsx";//"C:/Users/Administrator/Desktop/idy/花名册2016.01.25.xlsx"
+		//parseExcel97_2003();
+		//parseExcel07_2013(file);
+		
+	}*/
+	public static void main(String[] args) {
+		parseExcelTemp("E:/4.基金项目/开户失败用户数据.xlsx");
 	}
-	
 	public static Sheet write_07_2010(File file, List<Excel> list, Integer sheetId) throws Exception {
 		@SuppressWarnings("resource")
 		XSSFWorkbook workBook = new XSSFWorkbook(file);
@@ -239,10 +245,10 @@ public class ExcelUtils {
 		}
 	}
 	
-	public static void parseExcel07_2013(){
+	public static void parseExcel07_2013(String fileName){
 		InputStream is = null;
 		try {
-			File f = new File("C:/Users/Administrator/Desktop/idy/花名册2016.01.25.xlsx");
+			File f = new File(fileName);
 			System.out.println(f.getName());
 			is = new FileInputStream(f);
 			@SuppressWarnings("resource")
@@ -261,6 +267,66 @@ public class ExcelUtils {
 				}
 				System.out.println();
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(is != null){
+				try {
+					is.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				is = null;
+			}
+		}
+	}
+	
+	public static void parseExcelTemp(String fileName){
+		InputStream is = null;
+		Set<String> valSet = new HashSet<String>();
+		try {
+			File f = new File(fileName);
+			System.out.println(f.getName());
+			is = new FileInputStream(f);
+			@SuppressWarnings("resource")
+			XSSFWorkbook wb = new XSSFWorkbook(is);
+			XSSFSheet sheet = wb.getSheetAt(0);
+			//第一行忽略 i=sheet.getFirstRowNum();
+			for(int i = 1;i<sheet.getPhysicalNumberOfRows();i++) {
+				XSSFRow _row = sheet.getRow(i);
+				if(_row == null) {
+					continue;
+				}
+				String key = "";
+				/*for (int j = 4; j <= 7; j++) { 
+					 XSSFCell cell = _row.getCell(j);
+				}*/
+				key = key + "'" + getValue(_row.getCell(7)) + "',";
+				key = key + "'" + getValue(_row.getCell(6)) + "',";
+				key = key + "'" + getValue(_row.getCell(4)) + "',";
+				key = key + "'" + getValue(_row.getCell(5)) + "',";
+				if(key.length() > 12){
+					valSet.add(key);
+				}
+				//System.out.println(key);
+			}
+			System.out.println("---------------------------------------");
+			for(String k : valSet) {
+				System.out.println(k);
+			}
+			StringBuilder sb = new StringBuilder();
+			sb.append("INSERT INTO fund_error_code VALUES");
+			int i=0;
+			for(String s : valSet) {
+				i++;
+				sb.append("(NULL,null,null,").append(s).append("'',NOW(),NOW(),0)");
+				if(i == valSet.size() - 1) {
+					sb.append(";");
+				}else {
+					sb.append(",");
+				}
+			}
+			System.out.println(sb.substring(0, sb.length()-1));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally{
