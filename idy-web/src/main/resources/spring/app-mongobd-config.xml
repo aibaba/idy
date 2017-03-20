@@ -11,7 +11,7 @@
 
 	<!-- <context:component-scan base-package="liming.mongodb.example" /> -->
 
-	<mongo:mongo id="mongo" host="10.141.4.77" port="27017"  />
+	<mongo:mongo id="mongo" host="127.0.0.1" port="27017"  />
 	<!-- 配置mongodb的用户及密码 -->
 
     <!-- <bean id="userCredentials" class="org.springframework.data.authentication.UserCredentials">
