@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.alibaba.fastjson.JSON;
 import com.idy.base.BaseController;
 import com.idy.domain.UserInfo;
-import com.idy.service.ExcelService;
 import com.idy.service.UserInfoService;
 
 /**
@@ -28,10 +27,6 @@ import com.idy.service.UserInfoService;
 public class TestMongoController extends BaseController {
 	
 	protected static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(TestMongoController.class);
-	
-	@Autowired
-	private ExcelService excelService;
-	
 	
 	@Autowired
 	private UserInfoService userInfoService;
