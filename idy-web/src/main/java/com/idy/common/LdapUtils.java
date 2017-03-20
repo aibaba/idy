@@ -18,7 +18,7 @@ public class LdapUtils {
 	public static DirContext getCtx() {
 		String account = "penggao15"; 
 		String password = "Gaopeng.2";
-		String root = "dc=creditease,dc=cn"; 
+		String root = "dc=adc,dc=cn"; 
 		@SuppressWarnings("rawtypes")
 		Hashtable env = new Hashtable();
 		env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");

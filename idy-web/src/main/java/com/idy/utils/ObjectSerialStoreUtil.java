@@ -22,7 +22,7 @@ import lombok.Data;
 /**
  * 保存序列化的对象的数据库
  *@Description: TODO
- *@author penggao15@creditease.cn
+ *@author pein
  *@date 2016年1月29日 下午5:45:02 
  *@version V1.0
  */

@@ -20,7 +20,7 @@ import com.idy.service.SheetLogService;
 /**
  * 首页、默认页控制
  *@Description: TODO
- *@author penggao15@creditease.cn
+ *@author pein
  *@date 2015年11月10日 下午5:34:28 
  *@version V1.0
  */
